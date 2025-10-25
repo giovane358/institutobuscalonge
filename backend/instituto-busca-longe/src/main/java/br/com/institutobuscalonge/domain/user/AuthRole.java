@@ -1,12 +1,16 @@
 package br.com.institutobuscalonge.domain.user;
 
-public enum UserRole {
+public enum AuthRole {
     ADMIN("admin"),
     USER("user");
 
     private String role;
 
-     UserRole(String role){
-        this.role=role;
+    AuthRole(String role) {
+        this.role = role;
+    }
+
+    public String getRole() {
+        return role;
     }
 }

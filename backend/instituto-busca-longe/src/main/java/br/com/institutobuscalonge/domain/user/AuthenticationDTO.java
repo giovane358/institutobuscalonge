@@ -1,4 +1,5 @@
 package br.com.institutobuscalonge.domain.user;
 
-public class AuthenticationDTO {
+public record AuthenticationDTO(String email, String password) {
+
 }

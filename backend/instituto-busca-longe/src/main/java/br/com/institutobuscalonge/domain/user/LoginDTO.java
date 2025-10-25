@@ -1,4 +1,4 @@
 package br.com.institutobuscalonge.domain.user;
 
-public class LoginDTO {
+public record LoginDTO(String token){
 }
