@@ -1,6 +1,6 @@
 package br.com.institutobuscalonge.infra.security;
 
-import br.com.institutobuscalonge.domain.user.Auth;
+import br.com.institutobuscalonge.domain.Auth;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.ZoneOffset;
 
 @Service
@@ -26,6 +25,7 @@ public class TokenService {
                     .create() // Cria o Tokne
                     .withIssuer("instituto-busca-longe"). // Quem criou o token
                     withSubject(auth.getUsername()) // QUem criou o token
+                    .withClaim("id", auth.getId().toString())
                     .withExpiresAt(generateExpiresDate()) // Tempo de expiração do token
                     .sign(algorithm);
             return token;

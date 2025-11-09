@@ -29,7 +29,8 @@ public class SecurityConfigurations {
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/class").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/student/register").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/student/listar").permitAll()
                         .requestMatchers(
                                 "/v3/api-docs/**",
                                 "/v3/api-docs.yaml",

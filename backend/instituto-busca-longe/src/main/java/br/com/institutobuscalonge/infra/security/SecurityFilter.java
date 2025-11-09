@@ -20,7 +20,9 @@ import java.io.IOException;
 import java.util.List;
 
 @Component
-@SecurityScheme(name = SecurityFilter.SECURITY, type = SecuritySchemeType.HTTP, bearerFormat = "JWT", scheme = "Bearer ")
+@SecurityScheme(name = SecurityFilter.SECURITY,
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT", scheme = "Bearer")
 public class SecurityFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -29,7 +31,7 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Autowired
     private AuthorizationService authorizationService; // UserDetailsService
 
-    public static final String SECURITY = "BearerAuth ";
+    public static final String SECURITY = "BearerAuth";
 
     // rotas que NÃO devem ser filtradas (swagger, docs, auth, webjars...)
     private static final String[] AUTH_WHITE_LIST = {"/v3/api-docs/**",
@@ -83,4 +85,6 @@ public class SecurityFilter extends OncePerRequestFilter {
         if (!header.startsWith("Bearer ")) return null;
         return header.substring(7).trim();
     }
+
+
 }

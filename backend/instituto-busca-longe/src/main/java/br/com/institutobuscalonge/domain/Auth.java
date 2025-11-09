@@ -1,5 +1,6 @@
-package br.com.institutobuscalonge.domain.user;
+package br.com.institutobuscalonge.domain;
 
+import br.com.institutobuscalonge.enums.AuthRole;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

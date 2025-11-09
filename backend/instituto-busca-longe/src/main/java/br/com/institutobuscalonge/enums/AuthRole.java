@@ -1,4 +1,4 @@
-package br.com.institutobuscalonge.domain.user;
+package br.com.institutobuscalonge.enums;
 
 public enum AuthRole {
     ADMIN("admin"),

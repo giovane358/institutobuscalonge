@@ -1,20 +1,16 @@
 package br.com.institutobuscalonge.controller;
 
-
-import br.com.institutobuscalonge.domain.user.Auth;
-import br.com.institutobuscalonge.domain.user.AuthenticationDTO;
-import br.com.institutobuscalonge.domain.user.LoginDTO;
-import br.com.institutobuscalonge.domain.user.RegisterDTO;
-import br.com.institutobuscalonge.infra.security.SecurityConfigurations;
+import br.com.institutobuscalonge.domain.Auth;
+import br.com.institutobuscalonge.dto.AuthenticationDTO;
+import br.com.institutobuscalonge.dto.LoginDTO;
+import br.com.institutobuscalonge.dto.RegisterDTO;
 import br.com.institutobuscalonge.infra.security.SecurityFilter;
 import br.com.institutobuscalonge.infra.security.TokenService;
 import br.com.institutobuscalonge.repositories.AuthRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.Value;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +21,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("auth")
@@ -60,15 +55,15 @@ public class AuthenticationController {
     @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
     @ApiResponse(responseCode = "403", description = "Acesso negado")
     @ApiResponse(responseCode = "401", description = "Dados incorretos")
-    public ResponseEntity register(@RequestBody @Valid RegisterDTO data) {
+    public ResponseEntity<Auth> register(@RequestBody @Valid RegisterDTO data) {
         if (this.authRepository.findByEmail(data.email()) != null) {
             return ResponseEntity.badRequest().build();
         }
         String encryptedPasword = new BCryptPasswordEncoder().encode(data.password());
-        Auth newUser = new Auth(data.email(), encryptedPasword, data.role(), data.firstName(), data.lastName(), data.statusUser());
+        String statusUser = "Ativo";
+        Auth newUser = new Auth(data.email(), encryptedPasword, data.role(), data.firstName(), data.lastName(), statusUser);
 
         this.authRepository.save(newUser);
-
         return ResponseEntity.ok().build();
     }
 }

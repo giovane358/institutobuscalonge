@@ -1,4 +1,6 @@
-package br.com.institutobuscalonge.domain.user;
+package br.com.institutobuscalonge.dto;
+
+import java.util.UUID;
 
 public record AuthenticationDTO(String email, String password) {
 
