@@ -1,6 +1,4 @@
-package br.com.institutobuscalonge.dto;
-
-import java.util.UUID;
+package br.com.institutobuscalonge.dto.students;
 
 public record StudentDTO(String firstName,
                          String lastName,

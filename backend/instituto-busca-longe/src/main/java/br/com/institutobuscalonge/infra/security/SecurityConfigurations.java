@@ -27,10 +27,21 @@ public class SecurityConfigurations {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry
+                        // Configuração de acesso dos endpoints do usuario
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+
+                        // Configuração de acesso dos endpoints de estudantes
                         .requestMatchers(HttpMethod.POST, "/student/register").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/student/listar").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/student/listar/enabled").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/student/listar/disabled").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/student/update").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/student/delete").hasRole("ADMIN")
+
+                        // Configuração de acesso dos endpoints de instrutores
+                        .requestMatchers(HttpMethod.POST, "/instructor/register").hasRole("ADMIN")
+
+                        // Configuração de acesso das URLs do Swagger
                         .requestMatchers(
                                 "/v3/api-docs/**",
                                 "/v3/api-docs.yaml",

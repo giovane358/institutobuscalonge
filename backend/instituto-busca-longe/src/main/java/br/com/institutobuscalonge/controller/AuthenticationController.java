@@ -1,9 +1,9 @@
 package br.com.institutobuscalonge.controller;
 
 import br.com.institutobuscalonge.domain.Auth;
-import br.com.institutobuscalonge.dto.AuthenticationDTO;
-import br.com.institutobuscalonge.dto.LoginDTO;
-import br.com.institutobuscalonge.dto.RegisterDTO;
+import br.com.institutobuscalonge.dto.auth.AuthenticationDTO;
+import br.com.institutobuscalonge.dto.auth.LoginDTO;
+import br.com.institutobuscalonge.dto.auth.RegisterDTO;
 import br.com.institutobuscalonge.infra.security.SecurityFilter;
 import br.com.institutobuscalonge.infra.security.TokenService;
 import br.com.institutobuscalonge.repositories.AuthRepository;
@@ -29,8 +29,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AuthenticationController {
     @Autowired
     private AuthenticationManager authenticationManager;
+
     @Autowired
     private AuthRepository authRepository;
+
     @Autowired
     private TokenService tokenService;
 

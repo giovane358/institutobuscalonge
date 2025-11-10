@@ -1,4 +1,4 @@
-package br.com.institutobuscalonge.dto;
+package br.com.institutobuscalonge.dto.auth;
 
 import br.com.institutobuscalonge.enums.AuthRole;
 

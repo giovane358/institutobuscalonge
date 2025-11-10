@@ -16,6 +16,7 @@ import java.util.UUID;
 @Entity(name = "auth")
 @Table(name = "auth")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
@@ -57,6 +58,7 @@ public class Auth implements UserDetails {
         this.lastName = lastName;
         this.statusUser = statusUser;
     }
+
 
 
 
