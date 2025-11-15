@@ -3,12 +3,16 @@ package br.com.institutobuscalonge.controller;
 
 import br.com.institutobuscalonge.domain.Auth;
 import br.com.institutobuscalonge.domain.Instructor;
+import br.com.institutobuscalonge.domain.Student;
 import br.com.institutobuscalonge.dto.instructor.InstructorDTO;
+import br.com.institutobuscalonge.dto.instructor.InstructorDeleteDTO;
+import br.com.institutobuscalonge.dto.instructor.InstructorUpdateDTO;
 import br.com.institutobuscalonge.repositories.InstructorRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.persistence.PreUpdate;
 import jakarta.validation.Valid;
 import org.apache.tomcat.util.net.openssl.ciphers.Encryption;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/instructor")
@@ -56,5 +63,106 @@ public class InstructorController {
         instructorRepository.save(instructor);
         return ResponseEntity.ok(instructor);
 
+    }
+    @GetMapping(path = "/listar/enable")
+    @Operation(summary = "Listar Instrutores", description = "Realiza a listagem dos instrutores registrado do usuário logado", method = "POST")
+    @ApiResponse(responseCode = "200", description = "Login realizado com sucesso")
+    @ApiResponse(responseCode = "400", description = "Não foi possível processar a sua solicitação")
+    @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
+    @ApiResponse(responseCode = "403", description = "Acesso negado")
+    @ApiResponse(responseCode = "401", description = "Dados incorretos")
+    public ResponseEntity<List<Instructor>> getInscrutorEnable(Authentication authentication){
+        if (authentication == null || !(authentication.getPrincipal() instanceof Auth)){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        Auth auth = (Auth) authentication.getPrincipal();
+        UUID userId = auth.getId();
+
+        List<Instructor> insctructor = this.instructorRepository.findAllByCreatedBy_IdAndActiveTrue(userId);
+
+        return ResponseEntity.ok(insctructor);
+    }
+
+    @GetMapping(path = "/listar/disabled")
+    @Operation(summary = "Listar Instrutores", description = "Realiza a listagem dos instrutores registrado do usuário logado", method = "POST")
+    @ApiResponse(responseCode = "200", description = "Login realizado com sucesso")
+    @ApiResponse(responseCode = "400", description = "Não foi possível processar a sua solicitação")
+    @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
+    @ApiResponse(responseCode = "403", description = "Acesso negado")
+    @ApiResponse(responseCode = "401", description = "Dados incorretos")
+    public ResponseEntity<List<Instructor>> getInscrutorDisabled(Authentication authentication){
+        if (authentication == null || !(authentication.getPrincipal() instanceof Auth)){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        Auth auth = (Auth) authentication.getPrincipal();
+        UUID userId = auth.getId();
+
+        List<Instructor> insctructor = this.instructorRepository.findAllByCreatedBy_IdAndActiveTrue(userId);
+
+        return ResponseEntity.ok(insctructor);
+    }
+
+
+    @DeleteMapping(path = "/delete")
+    @Operation(summary = "Deletar", description = "Realiza a listagem dos instrutores registrado do usuário logado", method = "POST")
+    @ApiResponse(responseCode = "200", description = "Login realizado com sucesso")
+    @ApiResponse(responseCode = "400", description = "Não foi possível processar a sua solicitação")
+    @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
+    @ApiResponse(responseCode = "403", description = "Acesso negado")
+    @ApiResponse(responseCode = "401", description = "Dados incorretos")
+    public ResponseEntity<Instructor> deleteInstructor(Authentication authentication, @RequestBody @Valid InstructorDeleteDTO data){
+        if (authentication == null || !(authentication.getPrincipal() instanceof Auth)){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        Auth authUser = (Auth) authentication.getPrincipal();
+        UUID userId = authUser.getId();
+
+        Instructor instructor = instructorRepository.findById(data.ri()).orElse( null);
+
+        if (instructor == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        if (instructor.getCreatedBy() == null || !instructor.getCreatedBy().getId().equals(userId)){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        instructor.setActive(false);
+        instructorRepository.save(instructor);
+        return ResponseEntity.ok(instructor);
+
+    }
+
+    @PutMapping("/update")
+    @Operation(summary = "Atualizar dados do instructor", description = "Esse metodo realizar atualização no cadstro no instrutor", method = "PUT")
+    @ApiResponse(responseCode = "200", description = "Login realizado com sucesso")
+    @ApiResponse(responseCode = "400", description = "Não foi possível processar a sua solicitação")
+    @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
+    @ApiResponse(responseCode = "403", description = "Acesso negado")
+    @ApiResponse(responseCode = "401", description = "Dados incorretos")
+    public ResponseEntity<Instructor> updateInstructor(Authentication authentication, @RequestBody @Valid InstructorUpdateDTO data){
+        if (authentication == null || authentication.getPrincipal() instanceof Auth){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        Auth user = (Auth) authentication.getPrincipal();
+        UUID userId = user.getId();
+
+        Instructor instructor = instructorRepository.findById(data.ri()).orElse(null);
+
+        if (instructor == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        if (instructor.getCreatedBy() == null || !instructor.getCreatedBy().getId().equals(userId)){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        instructor.setRi(data.ri());
+        instructor.setEmail(data.email());
+        instructor.setContact(data.contact());
+        instructorRepository.save(instructor);
+        return ResponseEntity.ok(instructor);
     }
 }

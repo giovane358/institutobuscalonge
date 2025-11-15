@@ -43,21 +43,20 @@ public class Auth implements UserDetails {
     @Column(name = "name_role")
     private AuthRole role;
 
-    @Column(name = "status_user")
-    private String statusUser;
+    @Column(name = "active", nullable = false)
+    private Boolean active = true;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    public Auth(String email, String passwordUser, AuthRole role, String firstName, String lastName, String statusUser) {
+    public Auth(String email, String passwordUser, AuthRole role, String firstName, String lastName) {
         this.email = email;
         this.password = passwordUser;
         this.role = role;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.statusUser = statusUser;
-    }
+            }
 
 
 
