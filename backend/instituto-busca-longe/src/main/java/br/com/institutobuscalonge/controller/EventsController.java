@@ -2,40 +2,39 @@ package br.com.institutobuscalonge.controller;
 
 
 import br.com.institutobuscalonge.domain.Auth;
+import br.com.institutobuscalonge.domain.Events;
 import br.com.institutobuscalonge.domain.Instructor;
-import br.com.institutobuscalonge.domain.Student;
-import br.com.institutobuscalonge.dto.instructor.InstructorDTO;
+import br.com.institutobuscalonge.dto.events.EventesUpdateDTO;
+import br.com.institutobuscalonge.dto.events.EventsDTO;
+import br.com.institutobuscalonge.dto.events.EventsDeleteDTO;
 import br.com.institutobuscalonge.dto.instructor.InstructorDeleteDTO;
 import br.com.institutobuscalonge.dto.instructor.InstructorUpdateDTO;
-import br.com.institutobuscalonge.repositories.InstructorRepository;
+import br.com.institutobuscalonge.repositories.EventsRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.persistence.PreUpdate;
 import jakarta.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.net.openssl.ciphers.Encryption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 
-@Slf4j
+
 @RestController
-@RequestMapping("/instructor")
-@Tag(name = "Instrutores", description = "Controle de Instrutores")
+@RequestMapping("/events")
+@Tag(name = "Eventos", description = "Controller de Eventos")
 @SecurityRequirement(name = "BearerAuth")
-public class InstructorController {
+public class EventsController {
 
     @Autowired
-    InstructorRepository instructorRepository;
+    private EventsRepository eventsRepository;
 
     @PostMapping(path = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Realizar o cadastro", description = "Realizar a verificação se tem usuário com os mesmo dados cadastrado no sistema...")
@@ -44,28 +43,30 @@ public class InstructorController {
     @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
     @ApiResponse(responseCode = "403", description = "Acesso negado")
     @ApiResponse(responseCode = "401", description = "Dados incorretos")
-    public ResponseEntity<Instructor> registerInstructor(Authentication authentication, @RequestBody @Valid InstructorDTO data){
+    public ResponseEntity<?> registerEvent(Authentication authentication, @RequestBody @Valid EventsDTO data) {
 
+        // pegar auth do Authentication
         Auth user = null;
-        if (authentication != null && authentication.getPrincipal() instanceof Auth) {
+
+        if (authentication != null  && authentication.getPrincipal() instanceof Auth) {
             user = (Auth) authentication.getPrincipal();
         }
 
-        if (this.instructorRepository.findByEmail(data.email()) != null) {
-             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        if (this.eventsRepository.findByTitle(data.title()) != null){
+            return  ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        String encryptedPasword = new BCryptPasswordEncoder().encode(data.senha());
+        Events events = new Events(data.title(), data.description(), data.date(), data.houres(), data.address());
 
-        Instructor instructor = new Instructor(data.firstName(), data.firstName(), data.email(), encryptedPasword, data.contact(), data.cpf(), data.birthDate());
-
-        if (user != null) {
-            instructor.setCreatedBy(user);
+        if (user != null){
+            events.setCreatedBy(user);
         }
-        instructorRepository.save(instructor);
-        return ResponseEntity.ok(instructor);
 
+        eventsRepository.save(events);
+
+        return ResponseEntity.ok(events);
     }
+
     @GetMapping(path = "/listar/enable")
     @Operation(summary = "Listar Instrutores", description = "Realiza a listagem dos instrutores registrado do usuário logado", method = "POST")
     @ApiResponse(responseCode = "200", description = "Login realizado com sucesso")
@@ -73,16 +74,17 @@ public class InstructorController {
     @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
     @ApiResponse(responseCode = "403", description = "Acesso negado")
     @ApiResponse(responseCode = "401", description = "Dados incorretos")
-    public ResponseEntity<List<Instructor>> getInscrutorEnable(Authentication authentication){
+    public ResponseEntity<List<Events>> getEventsEnable(Authentication authentication){
+
         if (authentication == null || !(authentication.getPrincipal() instanceof Auth)){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         Auth auth = (Auth) authentication.getPrincipal();
         UUID userId = auth.getId();
 
-        List<Instructor> insctructor = this.instructorRepository.findAllByCreatedBy_IdAndActiveTrue(userId);
+        List<Events> events = this.eventsRepository.findAllByCreatedBy_IdAndActiveTrue(userId);
 
-        return ResponseEntity.ok(insctructor);
+        return ResponseEntity.ok(events);
     }
 
     @GetMapping(path = "/listar/disabled")
@@ -92,18 +94,18 @@ public class InstructorController {
     @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
     @ApiResponse(responseCode = "403", description = "Acesso negado")
     @ApiResponse(responseCode = "401", description = "Dados incorretos")
-    public ResponseEntity<List<Instructor>> getInscrutorDisabled(Authentication authentication){
+    public ResponseEntity<List<Events>> getInscrutorDisabled(Authentication authentication){
+
         if (authentication == null || !(authentication.getPrincipal() instanceof Auth)){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         Auth auth = (Auth) authentication.getPrincipal();
         UUID userId = auth.getId();
 
-        List<Instructor> insctructor = this.instructorRepository.findAllByCreatedBy_IdAndActiveFalse(userId);
+        List<Events> events = this.eventsRepository.findAllByCreatedBy_IdAndActiveFalse(userId);
 
-        return ResponseEntity.ok(insctructor);
+        return ResponseEntity.ok(events);
     }
-
 
     @DeleteMapping(path = "/delete")
     @Operation(summary = "Deletar", description = "Realiza a listagem dos instrutores registrado do usuário logado", method = "POST")
@@ -112,7 +114,7 @@ public class InstructorController {
     @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
     @ApiResponse(responseCode = "403", description = "Acesso negado")
     @ApiResponse(responseCode = "401", description = "Dados incorretos")
-    public ResponseEntity<Instructor> deleteInstructor(Authentication authentication, @RequestBody @Valid InstructorDeleteDTO data){
+    public ResponseEntity<Events> deleteInstructor(Authentication authentication, @RequestBody @Valid EventsDeleteDTO data){
         if (authentication == null || !(authentication.getPrincipal() instanceof Auth)){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -120,19 +122,19 @@ public class InstructorController {
         Auth authUser = (Auth) authentication.getPrincipal();
         UUID userId = authUser.getId();
 
-        Instructor instructor = instructorRepository.findById(data.ri()).orElse( null);
+        Events events = eventsRepository.findById(data.id()).orElse( null);
 
-        if (instructor == null){
+        if (events == null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        if (instructor.getCreatedBy() == null || !instructor.getCreatedBy().getId().equals(userId)){
+        if (events.getCreatedBy() == null || !events.getCreatedBy().getId().equals(userId)){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        instructor.setActive(false);
-        instructorRepository.save(instructor);
-        return ResponseEntity.ok(instructor);
+        events.setActive(false);
+        eventsRepository.save(events);
+        return ResponseEntity.ok(events);
 
     }
 
@@ -143,7 +145,7 @@ public class InstructorController {
     @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
     @ApiResponse(responseCode = "403", description = "Acesso negado")
     @ApiResponse(responseCode = "401", description = "Dados incorretos")
-    public ResponseEntity<Instructor> updateInstructor(Authentication authentication, @RequestBody @Valid InstructorUpdateDTO data){
+    public ResponseEntity<Events> updateInstructor(Authentication authentication, @RequestBody @Valid EventesUpdateDTO data){
 
         // pega Auth do Authentication (se presente)
         if (authentication == null || !(authentication.getPrincipal() instanceof Auth)) {
@@ -153,21 +155,22 @@ public class InstructorController {
         Auth authUser = (Auth) authentication.getPrincipal();
         UUID userId = authUser.getId();
 
-        Instructor instructor = instructorRepository.findById(data.ri()).orElse(null);
+        Events events = eventsRepository.findById(data.id()).orElse(null);
 
-        if (instructor == null) {
+        if (events == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
         // Verifica se o estudante pertence ao usuário logado
-        if (instructor.getCreatedBy() == null || !instructor.getCreatedBy().getId().equals(userId)) {
+        if (events.getCreatedBy() == null || !events.getCreatedBy().getId().equals(userId)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        instructor.setRi(data.ri());
-        instructor.setEmail(data.email());
-        instructor.setContact(data.contact());
-        instructorRepository.save(instructor);
-        return ResponseEntity.ok(instructor);
+        events.setId(data.id());
+        events.setTitle(data.title());
+        events.setDescription(data.description());
+        eventsRepository.save(events);
+        return ResponseEntity.ok(events);
     }
+
 }
