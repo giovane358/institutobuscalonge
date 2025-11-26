@@ -37,7 +37,7 @@ public class AuthenticationController {
     private TokenService tokenService;
 
     @PostMapping("/login")
-    @Operation(summary = "Realizar o login", description = "Realizar a validação do usuário e gera o token", method = "POST")
+    @Operation(summary = "Realizar o login", description = "Autentica o usuário com email e senha, retornando um token JWT para uso nos endpoints protegidos.", method = "POST")
     @ApiResponse(responseCode = "200", description = "Login realizado com sucesso")
     @ApiResponse(responseCode = "400", description = "Não foi possível processar a sua solicitação")
     @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
@@ -51,7 +51,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    @Operation(summary = "Realizar o cadastro", description = "Realizar a verificação se tem usuário com os mesmo dados cadastrado no sistema se não tiver e possível realizar o cadastro", method = "POST")
+    @Operation(summary = "Realizar o cadastro", description = "Cria um novo usuário (registro). Recebe os dados necessários para cadastro e retorna informações do usuário criado (sem a senha).", method = "POST")
     @ApiResponse(responseCode = "200", description = "Login realizado com sucesso")
     @ApiResponse(responseCode = "400", description = "Não foi possível processar a sua solicitação")
     @ApiResponse(responseCode = "500", description = "Erro interno no servidor")

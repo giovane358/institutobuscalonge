@@ -1,4 +1,4 @@
 package br.com.institutobuscalonge.dto.classRoom;
 
-public record ClassRoomDeleteDTO(int id) {
+public record ClassRoomDeleteDTO(Integer id) {
 }

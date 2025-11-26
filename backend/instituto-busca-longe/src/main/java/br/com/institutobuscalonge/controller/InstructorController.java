@@ -30,7 +30,7 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @RequestMapping("/instructor")
-@Tag(name = "Instrutores", description = "Controle de Instrutores")
+@Tag(name = "Instrutores.", description = "Observação: esses endpoints exigem autenticação. Algumas operações (ex.: delete, update) podem exigir a role ADMIN ou INSTRUCTOR_MANAGER.")
 @SecurityRequirement(name = "BearerAuth")
 public class InstructorController {
 
@@ -38,7 +38,7 @@ public class InstructorController {
     InstructorRepository instructorRepository;
 
     @PostMapping(path = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Realizar o cadastro", description = "Realizar a verificação se tem usuário com os mesmo dados cadastrado no sistema...")
+    @Operation(summary = "Realizar o cadastro", description = "Cria um novo instrutor no sistema.")
     @ApiResponse(responseCode = "200", description = "Login realizado com sucesso")
     @ApiResponse(responseCode = "400", description = "Não foi possível processar a sua solicitação")
     @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
@@ -66,8 +66,8 @@ public class InstructorController {
         return ResponseEntity.ok(instructor);
 
     }
-    @GetMapping(path = "/listar/enable")
-    @Operation(summary = "Listar Instrutores", description = "Realiza a listagem dos instrutores registrado do usuário logado", method = "POST")
+    @GetMapping(path = "/list/enable")
+    @Operation(summary = "Listar Instrutores habilitados", description = "Retorna a lista de instrutores com enabled = true", method = "POST")
     @ApiResponse(responseCode = "200", description = "Login realizado com sucesso")
     @ApiResponse(responseCode = "400", description = "Não foi possível processar a sua solicitação")
     @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
@@ -85,8 +85,8 @@ public class InstructorController {
         return ResponseEntity.ok(insctructor);
     }
 
-    @GetMapping(path = "/listar/disabled")
-    @Operation(summary = "Listar Instrutores", description = "Realiza a listagem dos instrutores registrado do usuário logado", method = "POST")
+    @GetMapping(path = "/list/disabled")
+    @Operation(summary = "Listar Instrutores desabilitados", description = "Retorna a lista de instrutores com enabled = false.", method = "POST")
     @ApiResponse(responseCode = "200", description = "Login realizado com sucesso")
     @ApiResponse(responseCode = "400", description = "Não foi possível processar a sua solicitação")
     @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
@@ -106,7 +106,7 @@ public class InstructorController {
 
 
     @DeleteMapping(path = "/delete")
-    @Operation(summary = "Deletar", description = "Realiza a listagem dos instrutores registrado do usuário logado", method = "POST")
+    @Operation(summary = "Deletar", description = "Remove (ou desabilita) um instrutor do sistema. Pode receber id como parâmetro no body", method = "POST")
     @ApiResponse(responseCode = "200", description = "Login realizado com sucesso")
     @ApiResponse(responseCode = "400", description = "Não foi possível processar a sua solicitação")
     @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
@@ -137,7 +137,7 @@ public class InstructorController {
     }
 
     @PutMapping("/update")
-    @Operation(summary = "Atualizar dados do instructor", description = "Esse metodo realizar atualização no cadstro no instrutor", method = "PUT")
+    @Operation(summary = "Atualizar dados do instrutor", description = "Atualiza os dados de um instrutor existente. Enviar o id e os campos a alterar.", method = "PUT")
     @ApiResponse(responseCode = "200", description = "Login realizado com sucesso")
     @ApiResponse(responseCode = "400", description = "Não foi possível processar a sua solicitação")
     @ApiResponse(responseCode = "500", description = "Erro interno no servidor")

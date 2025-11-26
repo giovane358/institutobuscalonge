@@ -11,7 +11,7 @@ import java.util.UUID;
 public interface ClassRoomRepository extends JpaRepository<ClassRoom, Integer> {
 
     ClassRoom findByTitle(String title);
-
+    ClassRoom findById(int id);
     List<ClassRoom> findAllByCreatedBy_IdAndActiveTrue(UUID createdById);
     List<ClassRoom> findAllByCreatedBy_IdAndActiveFalse(UUID createdById);
 

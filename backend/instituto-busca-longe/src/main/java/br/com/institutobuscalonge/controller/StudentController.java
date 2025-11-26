@@ -23,7 +23,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/student")
-@Tag(name = "Estudante", description = "Controle de estudantes")
+@Tag(name = "Estudante", description = "Observação: esses endpoints exigem autenticação. Algumas operações (ex.: delete, update) podem exigir a role ADMIN ou INSTRUCTOR_MANAGER")
 @SecurityRequirement(name = "BearerAuth")
 public class StudentController {
 
@@ -86,7 +86,7 @@ public class StudentController {
 
     }
 
-    @GetMapping(path = "/listar/enabled")
+    @GetMapping(path = "/list/enabled")
     @Operation(summary = "Realizar a listagem", description = "Realizar a listagem de todos os estudantes ativos pelo usuário")
     @ApiResponse(responseCode = "200", description = "Login realizado com sucesso")
     @ApiResponse(responseCode = "400", description = "Não foi possível processar a sua solicitação")
@@ -107,7 +107,7 @@ public class StudentController {
         return ResponseEntity.ok(students);
     }
 
-    @GetMapping(path = "/listar/disabled")
+    @GetMapping(path = "/list/disabled")
     @Operation(summary = "Realizar a listagem", description = "Realizar a listagem de todos os estudantes desativados pelo usuário")
     @ApiResponse(responseCode = "200", description = "Login realizado com sucesso")
     @ApiResponse(responseCode = "400", description = "Não foi possível processar a sua solicitação")
@@ -128,14 +128,14 @@ public class StudentController {
         return ResponseEntity.ok(students);
     }
 
-    @DeleteMapping(path = "/delete", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(path = "/delet", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Realizar a listagem", description = "Realizar a listagem de todos os estudantes desativados pelo usuário")
     @ApiResponse(responseCode = "200", description = "Login realizado com sucesso")
     @ApiResponse(responseCode = "400", description = "Não foi possível processar a sua solicitação")
     @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
     @ApiResponse(responseCode = "403", description = "Acesso negado")
     @ApiResponse(responseCode = "401", description = "Dados incorretos")
-    public ResponseEntity<Student> deleteStudent(Authentication authentication, @RequestBody @Valid StudentDeleteDTO data) {
+    public ResponseEntity<Student> deletStudent(Authentication authentication, @RequestBody @Valid StudentDeleteDTO data) {
         if (authentication == null || !(authentication.getPrincipal() instanceof Auth)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }

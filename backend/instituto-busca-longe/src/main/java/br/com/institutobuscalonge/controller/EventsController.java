@@ -29,7 +29,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/events")
-@Tag(name = "Eventos", description = "Controller de Eventos")
+@Tag(name = "Eventos", description = "Observação: esses endpoints exigem autenticação. Algumas operações (ex.: delete, update) podem exigir a role ADMIN ou INSTRUCTOR_MANAGER")
 @SecurityRequirement(name = "BearerAuth")
 public class EventsController {
 
@@ -37,7 +37,7 @@ public class EventsController {
     private EventsRepository eventsRepository;
 
     @PostMapping(path = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Realizar o cadastro", description = "Realizar a verificação se tem usuário com os mesmo dados cadastrado no sistema...")
+    @Operation(summary = "Realizar o cadastro", description = "Cria um novo evento.")
     @ApiResponse(responseCode = "200", description = "Login realizado com sucesso")
     @ApiResponse(responseCode = "400", description = "Não foi possível processar a sua solicitação")
     @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
@@ -67,8 +67,8 @@ public class EventsController {
         return ResponseEntity.ok(events);
     }
 
-    @GetMapping(path = "/listar/enable")
-    @Operation(summary = "Listar Instrutores", description = "Realiza a listagem dos instrutores registrado do usuário logado", method = "POST")
+    @GetMapping(path = "/list/enable")
+    @Operation(summary = "Listar eventos habilitados", description = "Lista eventos disponíveis (enabled = true).", method = "POST")
     @ApiResponse(responseCode = "200", description = "Login realizado com sucesso")
     @ApiResponse(responseCode = "400", description = "Não foi possível processar a sua solicitação")
     @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
@@ -87,8 +87,8 @@ public class EventsController {
         return ResponseEntity.ok(events);
     }
 
-    @GetMapping(path = "/listar/disabled")
-    @Operation(summary = "Listar Instrutores", description = "Realiza a listagem dos instrutores registrado do usuário logado", method = "POST")
+    @GetMapping(path = "/list/disabled")
+    @Operation(summary = "Listar eventos desabilitados", description = "Lista eventos marcados como desabilitados.", method = "POST")
     @ApiResponse(responseCode = "200", description = "Login realizado com sucesso")
     @ApiResponse(responseCode = "400", description = "Não foi possível processar a sua solicitação")
     @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
@@ -107,14 +107,14 @@ public class EventsController {
         return ResponseEntity.ok(events);
     }
 
-    @DeleteMapping(path = "/delete")
-    @Operation(summary = "Deletar", description = "Realiza a listagem dos instrutores registrado do usuário logado", method = "POST")
+    @DeleteMapping(path = "/delet")
+    @Operation(summary = "Deletar evento", description = "Remove ou desabilita um evento pelo id.", method = "POST")
     @ApiResponse(responseCode = "200", description = "Login realizado com sucesso")
     @ApiResponse(responseCode = "400", description = "Não foi possível processar a sua solicitação")
     @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
     @ApiResponse(responseCode = "403", description = "Acesso negado")
     @ApiResponse(responseCode = "401", description = "Dados incorretos")
-    public ResponseEntity<Events> deleteInstructor(Authentication authentication, @RequestBody @Valid EventsDeleteDTO data){
+    public ResponseEntity<Events> deletInstructor(Authentication authentication, @RequestBody @Valid EventsDeleteDTO data){
         if (authentication == null || !(authentication.getPrincipal() instanceof Auth)){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -139,7 +139,7 @@ public class EventsController {
     }
 
     @PutMapping("/update")
-    @Operation(summary = "Atualizar dados do instructor", description = "Esse metodo realizar atualização no cadstro no instrutor", method = "PUT")
+    @Operation(summary = "Atualizar evento", description = "Atualiza os dados de um evento existente.", method = "PUT")
     @ApiResponse(responseCode = "200", description = "Login realizado com sucesso")
     @ApiResponse(responseCode = "400", description = "Não foi possível processar a sua solicitação")
     @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
