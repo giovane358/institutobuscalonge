@@ -21,8 +21,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequestMapping("auth")
 @Tag(name = "Usuario", description = "Controle de Criar e Login")
 @SecurityRequirement(name = SecurityFilter.SECURITY)
@@ -35,6 +36,7 @@ public class AuthenticationController {
 
     @Autowired
     private TokenService tokenService;
+
 
     @PostMapping("/login")
     @Operation(summary = "Realizar o login", description = "Autentica o usuário com email e senha, retornando um token JWT para uso nos endpoints protegidos.", method = "POST")

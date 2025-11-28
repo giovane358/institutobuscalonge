@@ -9,7 +9,6 @@ let active = 0;
 const total = items.length
 let timer;
 
-
 function update(direction) {
     document.querySelector('.item.active').classList.remove('active')
     document.querySelector('.dot.active').classList.remove('active')
@@ -38,10 +37,6 @@ clearInterval(timer)
  timer = setInterval(() => {
         update(1)
     }, 5000);
-
-
-
-
 
 prevButton.addEventListener('click', function() {
     update(-1)

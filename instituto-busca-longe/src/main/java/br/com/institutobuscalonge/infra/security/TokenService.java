@@ -26,6 +26,7 @@ public class TokenService {
                     .withIssuer("instituto-busca-longe"). // Quem criou o token
                     withSubject(auth.getUsername()) // QUem criou o token
                     .withClaim("id", auth.getId().toString())
+                    .withClaim("roles", auth.getRole().toString())
                     .withExpiresAt(generateExpiresDate()) // Tempo de expiração do token
                     .sign(algorithm);
             return token;

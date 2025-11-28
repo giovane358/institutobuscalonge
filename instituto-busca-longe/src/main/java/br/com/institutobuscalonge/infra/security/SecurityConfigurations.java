@@ -24,24 +24,33 @@ public class SecurityConfigurations {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-                .csrf(csrf -> csrf.disable())
+                .csrf(csrf -> csrf.disable()) // ok para teste; em produção, reavalie
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry
-                        // Configuração de acesso dos endpoints do usuario
-                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                .authorizeHttpRequests(auth -> auth
+                        // permitir a página de login (GET) e recursos estáticos
+                        .requestMatchers(HttpMethod.GET, "/login").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
 
-                        // Configuração de acesso dos endpoints de estudantes
+                        .requestMatchers(HttpMethod.GET, "/dashboard").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/register").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/homePage").permitAll()
+
+                        // permitir todos os endpoints de auth (opcional; mantém POST autorizar)
+                        .requestMatchers("/auth/**", "/api/auth/**").permitAll()
+
+                        // permitir acesso para os forwards internos ao JSP (IMPORTANTE)
+                        .requestMatchers(HttpMethod.GET, "/WEB-INF/**").permitAll()
+                        .requestMatchers("/error").permitAll()
+
+                        // endpoints já protegidos por role (exemplo)
                         .requestMatchers(HttpMethod.POST, "/student/register").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/student/listar/enabled").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/student/listar/disabled").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/student/update").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/student/delete").hasRole("ADMIN")
-
-                        // Configuração de acesso dos endpoints de instrutores
                         .requestMatchers(HttpMethod.POST, "/instructor/register").hasRole("ADMIN")
 
-                        // Configuração de acesso das URLs do Swagger
+                        // Swagger
                         .requestMatchers(
                                 "/v3/api-docs/**",
                                 "/v3/api-docs.yaml",
@@ -51,6 +60,7 @@ public class SecurityConfigurations {
                                 "/webjars/**",
                                 "/doc/**"
                         ).permitAll()
+
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

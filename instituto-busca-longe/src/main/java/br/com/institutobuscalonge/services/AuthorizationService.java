@@ -24,6 +24,7 @@ public class AuthorizationService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("Usuário não encontrado: " + username);
         }
+
         return user;
     }
 
