@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet" href="login.css">
+    <title>Login</title>
+</head>
+<body>
+     <main class="container" >
+        <form>
+            <h1>Login Acesso</h1>
+            <div class="input-box" >
+                <input placeholder="Usuario" type="email"  id="email" oninput="validarEmail()">
+                <p id="msgEmail" style="color:red; font-size:14px;"></p>
+                <i class="bx bxs-user" ></i>
+            </div>
+            <div class="input-box" >
+                <input placeholder="Senha" type="password" id="senha" oninput="validarSenha()">
+                <p id="forcaSenha" style="font-size:14px;"></p>
+                <p id="msg"></p>
+                <i class="bx bxs-lock-alt" ></i>
+            </div>
+
+            <div class="remenber-forgot">
+                <label>
+                 <input type="checkbox" >
+                 Lembrar Senha
+                </label>
+                <a href="#">Esqueci a senha</a>
+            </div>
+
+            <button type="submit" class="login" onclick="logar(); return false">Login</button>
+
+            <div class="register-link">
+                <p>Não tem uma conta? <a href="#">CADASTRE-SE</a></p>
+                <p>email: admin@admin.com</p>
+                <p>senha: claM#123</p>
+            </div>
+        </form>
+        <script src="login.js"></script>
+    </body> 
+</html>
