@@ -8,6 +8,6 @@ CREATE TABLE student (
   name_mom VARCHAR(50) NOT NULL,
   contact VARCHAR(13) NOT NULL,
   auth_id UNIQUEIDENTIFIER NOT NULL,
-  active bit NOT NULL CONSTRAINT df_student_active DEFAULT 1
+  active BIT NOT NULL DEFAULT 1,
   FOREIGN KEY (auth_id) REFERENCES auth(id_user)
 );

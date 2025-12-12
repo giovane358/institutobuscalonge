@@ -1,0 +1,153 @@
+/* ---------- RESET ---------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    background: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ---------- CONTAINER PRINCIPAL ---------- */
+.container {
+    width: 85%;
+    max-width: 1150px;
+    height: 520px;
+    background: #fff;
+    display: flex;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid #dcdcdc;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+}
+
+/* ---------- LADO ESQUERDO COM ILUSTRAÇÃO ---------- */
+.container::before {
+    content: "";
+    width: 50%;
+    background-image: url("https://v0-instituto-busca-longe-website.vercel.app/talent-show-stage.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+/* ---------- FORMULÁRIO ---------- */
+form {
+    width: 50%;
+    padding: 55px 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+h2 {
+    font-size: 32px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+form p {
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+/* ---------- INPUTS ---------- */
+.input-box {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.input-box input {
+    width: 100%;
+    padding: 13px 15px;
+    border-radius: 15px;
+    border: 1px solid #c8c8c8;
+    font-size: 15px;
+    outline: none;
+}
+
+.input-box i {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+}
+
+/* ---------- LEMBRAR SENHA ---------- */
+.remenber-forgot {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+.remenber-forgot a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+/* ---------- BOTÃO LOGIN ---------- */
+button.login {
+    width: 100%;
+    padding: 12px;
+    background: #438DF2;
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    font-size: 17px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button.login:hover {
+    background: #2b6dd9;
+}
+
+/* ---------- LINK DE REGISTRO ---------- */
+.register-link {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 14px;
+}
+
+.register-link a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+/* Footer (opcional caso queira igual à imagem) */
+footer {
+    position: absolute;
+    bottom: 25px;
+    width: 100%;
+    text-align: center;
+    font-size: 13px;
+    color: #666;
+}
+
+/* ---------- RESPONSIVIDADE ---------- */
+@media (max-width: 900px) {
+    .container {
+        flex-direction: column;
+        height: auto;
+        max-width: 450px;
+    }
+
+    .container::before {
+        width: 100%;
+        height: 220px;
+    }
+
+    form {
+        width: 100%;
+        padding: 40px;
+    }
+}

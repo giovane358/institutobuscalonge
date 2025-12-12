@@ -1,0 +1,229 @@
+ * {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+     font-family: Arial, sans-serif;
+ }
+
+ body {
+     display: flex;
+     height: 100vh;
+     background: #f5f5f5;
+ }
+
+ /* SIDEBAR */
+ .sidebar {
+     width: 260px;
+     background: white;
+     border-right: 1px solid #ccc;
+     padding: 25px;
+ }
+
+ .sidebar h2 {
+     margin-bottom: 25px;
+ }
+
+ .menu-item {
+     padding: 12px;
+     border-radius: 6px;
+     margin-bottom: 5px;
+     cursor: pointer;
+ }
+
+ .menu-item.active,
+ .menu-item:hover {
+     background: #dceaff;
+ }
+
+ /* CONTEÚDO */
+ .content {
+     flex: 1;
+     padding: 25px;
+     overflow-y: auto;
+ }
+
+ .page {
+     display: none;
+ }
+
+ .page.active {
+     display: block;
+ }
+
+ h1 {
+     margin-bottom: 20px;
+ }
+
+ .card {
+     background: white;
+     padding: 15px;
+     border-radius: 8px;
+     margin-bottom: 25px;
+     border: 1px solid #ddd;
+ }
+
+ table {
+     width: 100%;
+     border-collapse: collapse;
+     margin-top: 15px;
+ }
+
+ th,
+ td {
+     padding: 10px;
+     border-bottom: 1px solid #e0e0e0;
+     text-align: left;
+ }
+
+ th {
+     background: #fafafa;
+ }
+
+ .actions i {
+     cursor: pointer;
+     margin-right: 12px;
+ }
+
+ .gallery-grid {
+     display: grid;
+     grid-template-columns: repeat(4, 1fr);
+     gap: 25px;
+ }
+
+ .gallery-card {
+     background: white;
+     padding: 10px;
+     border-radius: 8px;
+     border: 1px solid #ccc;
+ }
+
+ .gallery-card img {
+     width: 100%;
+     border-radius: 8px;
+ }
+
+ .status {
+     background: #4caf50;
+     padding: 6px 10px;
+     color: white;
+     border-radius: 4px;
+     font-size: 13px;
+     display: inline-block;
+     margin-top: 8px;
+ }
+
+ /* stilo barra pesquisa*/
+ .top-bar {
+     display: flex;
+     align-items: center;
+     gap: 12px;
+     padding: 10px;
+ }
+
+ .search-box {
+     width: 1300px;
+     /* ajuste para o tamanho desejado */
+     height: 40px;
+     background: #fff;
+     border-radius: 10px;
+     display: flex;
+     align-items: center;
+     padding: 0 12px;
+     box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+     gap: 10px;
+ }
+
+ /* Ícone de lupa */
+ .icon-search {
+     width: 18px;
+     height: 18px;
+     background-image: url('https://img.icons8.com/ios-glyphs/30/search--v1.png" alt="search--v1"/>');
+     background-size: contain;
+     background-repeat: no-repeat;
+ }
+
+ /* Input */
+ .search-box input {
+     border: none;
+     outline: none;
+     width: 100%;
+     font-size: 15px;
+     color: #333;
+ }
+
+ /* --- BOTÕES --- */
+ .buttons {
+     display: flex;
+     gap: 8px;
+ }
+
+ /* Todos os botões */
+ .btn {
+     padding: 8px 18px;
+     font-size: 14px;
+     border-radius: 10px;
+     border: none;
+     cursor: pointer;
+     transition: .2s;
+ }
+
+ /* Botão ativo (igual na imagem) */
+ .btn.active {
+     background: #4CAF50;
+     /* verde exemplo */
+     color: white;
+     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+ }
+
+ /* Botão inativo */
+ .btn.inactive {
+     background: #fff;
+     color: #555;
+     border: 1px solid #ddd;
+ }
+
+ /* Hover suave */
+ .btn:hover {
+     transform: translateY(-2px);
+ }
+
+ /* botão de adicionar*/
+ .add-btn {
+     margin: 15px 0;
+     padding: 10px 20px;
+     background: #4CAF50;
+     color: white;
+     border: none;
+     border-radius: 10px;
+     cursor: pointer;
+     font-size: 15px;
+     font-weight: bold;
+     transition: .2s;
+ }
+
+ .add-btn:hover {
+     background: #3e8e41;
+     transform: translateY(-2px);
+ }
+
+ /* botões da galeria*/
+
+ .actions-gallery {
+     margin-top: 8px;
+     display: flex;
+     justify-content: center;
+     gap: 10px;
+ }
+
+ .actions-gallery button {
+     cursor: pointer;
+     border: none;
+     background: #ddd;
+     padding: 6px;
+     border-radius: 6px;
+     font-size: 18px;
+ }
+
+ .actions-gallery button:hover {
+     background: #bbb;
+ }

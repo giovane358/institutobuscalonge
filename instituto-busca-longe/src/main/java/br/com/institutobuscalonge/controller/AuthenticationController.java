@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("auth")
 @Tag(name = "Usuario", description = "Controle de Criar e Login")
-@SecurityRequirement(name = SecurityFilter.SECURITY)
 public class AuthenticationController {
     @Autowired
     private AuthenticationManager authenticationManager;
