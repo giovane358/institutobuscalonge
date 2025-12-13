@@ -3,6 +3,7 @@ package br.com.institutobuscalonge.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
@@ -28,8 +29,8 @@ public class Events {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "date")
-    private Date date;
+    @Column(name = "data")
+    private String date;
 
     @Column(name = "houres")
     private String houres;
@@ -44,11 +45,11 @@ public class Events {
     @Column(name = "active", nullable = false)
     private Boolean active = true;
 
-    @UpdateTimestamp
-    @Column(name = "created_at")
-    private LocalDateTime created_at;
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
 
-    public Events(String title, String description, Date date, String houres, String address) {
+    public Events(String title, String description, String date, String houres, String address) {
         this.title = title;
         this.description = description;
         this.date = date;

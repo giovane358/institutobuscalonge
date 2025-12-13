@@ -10,6 +10,8 @@ import java.util.UUID;
 public interface InstructorRepository extends JpaRepository<Instructor, Integer> {
     Instructor findByEmail(String email);
 
+    Instructor findByRi(Integer ri);
+
     List<Instructor> findAllByCreatedBy_IdAndActiveTrue(UUID createdById);
     List<Instructor> findAllByCreatedBy_IdAndActiveFalse(UUID createdById);
 }

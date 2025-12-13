@@ -1,11 +1,23 @@
-const token = localStorage.getItem('token');
-document.getElementById("meu-elemento").innerHTML = token;
+const token = localStorage.getItem("token");
 
-/* ----------------------- MENU LATERAL ----------------------- */
+let instrutoresCache = [];
+let instructorSelecionado = null;
 
+/* ===================== HEADERS ===================== */
+function apiHeaders() {
+    return {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+    };
+}
+
+
+/* ===================== Start INSTRUCTOR ===================== */
+
+/* ===================== MENU ===================== */
 function abrirPagina(id, item = null) {
     document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-    document.getElementById(id).classList.add("active");
+    document.getElementById(id)?.classList.add("active");
 
     if (item) {
         document.querySelectorAll(".menu-item").forEach(m => m.classList.remove("active"));
@@ -13,186 +25,237 @@ function abrirPagina(id, item = null) {
     }
 }
 
-/* ------------------- FUNÇÕES GERAIS PARA TODAS AS TELAS ------------------- */
-
-function inicializarTabela(pageId) {
-
-    const page = document.getElementById(pageId);
-    if (!page) return;
-
-    const tabela = page.querySelector("table");
-    const tbody = tabela.querySelector("tbody");
-    const addBtn = page.querySelector(".add-btn");
-    const searchInput = page.querySelector(".search-box input");
-
-    const filtroBtns = page.querySelectorAll(".buttons .btn");
-
-    /* ---------- EDITAR / DELETAR ---------- */
-    function ativarEventosLinha(linha) {
-        const editBtn = linha.querySelector(".actions button:nth-child(1)");
-        const deleteBtn = linha.querySelector(".actions button:nth-child(2)");
-
-        deleteBtn.addEventListener("click", () => linha.remove());
-
-        editBtn.addEventListener("click", () => {
-            const colunas = linha.querySelectorAll("td");
-
-            colunas.forEach((coluna, index) => {
-                // Última coluna é ações → não edita
-                if (index === colunas.length - 1) return;
-
-                let novoValor = prompt(`Editar:`, coluna.innerText);
-                if (novoValor !== null) coluna.innerText = novoValor;
-            });
-        });
-    }
-
-    tbody.querySelectorAll("tr").forEach(linha => ativarEventosLinha(linha));
-
-    /* ---------- ADICIONAR ---------- */
-    if (addBtn) {
-        addBtn.addEventListener("click", () => {
-
-            const colunas = tabela.querySelectorAll("thead th");
-            let valores = [];
-
-            for (let i = 0; i < colunas.length - 1; i++) {
-                let valor = prompt(`Digite ${colunas[i].innerText}:`);
-                if (!valor) return alert("Preencha tudo!");
-                valores.push(valor);
-            }
-
-            const novaLinha = document.createElement("tr");
-
-            valores.forEach(v => novaLinha.innerHTML += `<td>${v}</td>`);
-
-            novaLinha.innerHTML += `
-                <td class="actions">
-                    <button>✏️</button>
-                    <button>🗑️</button>
-                </td>
-            `;
-
-            tbody.appendChild(novaLinha);
-            ativarEventosLinha(novaLinha);
-        });
-    }
-
-    /* ---------- FILTROS (Ativo, Inativo, etc.) ---------- */
-    filtroBtns.forEach(btn => {
-        btn.addEventListener("click", () => {
-
-            filtroBtns.forEach(b => b.classList.remove("active"));
-            btn.classList.add("active");
-
-            const filtro = btn.innerText.toLowerCase();
-            const linhas = tbody.querySelectorAll("tr");
-
-            linhas.forEach(linha => {
-                const status = linha.querySelector("td:nth-last-child(2)")?.innerText.toLowerCase();
-
-                if (filtro === "todos" || filtro === "todas") {
-                    linha.style.display = "";
-                } else {
-                    linha.style.display = status.includes(filtro) ? "" : "none";
-                }
-            });
-        });
-    });
-
-    /* ---------- PESQUISA ---------- */
-    if (searchInput) {
-        searchInput.addEventListener("keyup", () => {
-            const termo = searchInput.value.toLowerCase();
-
-            tbody.querySelectorAll("tr").forEach(linha => {
-                linha.style.display = linha.innerText.toLowerCase().includes(termo) ? "" : "none";
-            });
-        });
-    }
-}
-
-/* --------------- INICIAR TODAS AS TELAS AUTOMATICAMENTE --------------- */
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    const telas = [
-        "estudantes",
-        "instrutores",
-        "salas",
-        "eventos",
-        "atividades",
-        "galeria"
-    ];
-
-    telas.forEach(tela => inicializarTabela(tela));
-});
-
-// Seleciona elementos
-const addButton = document.querySelector("#galeria .add-btn");
-const galleryGrid = document.querySelector(".gallery-grid");
-
-// Função para criar novo card na galeria
-function criarCard(imgURL) {
-    const card = document.createElement("div");
-    card.classList.add("gallery-card");
-
-    card.innerHTML = `
-        <img src="${imgURL}">
-        <div class="status">Ativo</div>
-
-        <div class="actions-gallery">
-            <button class="edit-img">✏️</button>
-            <button class="delete-img">🗑️</button>
-        </div>
-    `;
-
-    // Evento excluir
-    card.querySelector(".delete-img").addEventListener("click", () => {
-        card.remove();
-    });
-
-    // Evento editar imagem
-    card.querySelector(".edit-img").addEventListener("click", () => {
-        let input = document.createElement("input");
-        input.type = "file";
-        input.accept = "image/*";
-
-        input.onchange = () => {
-            const file = input.files[0];
-            if (file) {
-                const newURL = URL.createObjectURL(file);
-                card.querySelector("img").src = newURL;
-            }
-        };
-
-        input.click();
-    });
-
-    galleryGrid.appendChild(card);
-}
-
-
-
-// -------------------------------
-// BOTÃO ➕ ADICIONAR NOVA FOTO
-// -------------------------------
-addButton.addEventListener("click", () => {
-    let fileInput = document.createElement("input");
-    fileInput.type = "file";
-    fileInput.accept = "image/*";
-
-    fileInput.onchange = () => {
-        const file = fileInput.files[0];
-        if (file) {
-            const imgURL = URL.createObjectURL(file);
-            criarCard(imgURL);
-        }
+/* ===================== CADASTRO ===================== */
+function instructor() {
+    return {
+        firstName: document.getElementById("firstName").value,
+        lastName: document.getElementById("lastName").value,
+        email: document.getElementById("email").value,
+        senha: document.getElementById("senha").value,
+        contact: document.getElementById("contact").value,
+        cpf: document.getElementById("cpf").value,
+        birthDate: document.getElementById("birthDate").value
     };
+}
 
-    fileInput.click();
+async function registerInstructor() {
+    const inst = instructor();
+
+    const resp = await fetch("/instructor/register", {
+        method: "POST",
+        headers: apiHeaders(),
+        body: JSON.stringify(inst)
+    });
+
+    if (!resp.ok) throw new Error("Erro ao cadastrar");
+
+    fecharModalCadastro();
+    getInscrutorEnable();
+}
+
+/* ===================== LISTAR ATIVOS ===================== */
+async function fetchInstrutoresEnable() {
+    const resp = await fetch("/instructor/list/enable", {
+        method: "GET",
+        headers: apiHeaders()
+    });
+
+    if (!resp.ok) throw new Error("Erro ao buscar");
+
+    return resp.json();
+}
+
+async function getInscrutorEnable() {
+    try {
+        const lista = await fetchInstrutoresEnable();
+        renderInstrutores(lista);
+    } catch (e) {
+        console.error(e);
+        alert("Erro ao carregar instrutores ativos");
+    }
+}
+
+/* ===================== LISTAR INATIVOS ===================== */
+async function fetchInstrutoresDisabled() {
+    const resp = await fetch("/instructor/list/disabled", {
+        method: "GET",
+        headers: apiHeaders()
+    });
+
+    if (!resp.ok) throw new Error("Erro ao buscar");
+
+    return resp.json();
+}
+
+async function getInscrutorDisabled() {
+    try {
+        const lista = await fetchInstrutoresDisabled();
+        renderInstrutores(lista);
+    } catch (e) {
+        console.error(e);
+        alert("Erro ao carregar instrutores inativos");
+    }
+}
+
+/* ===================== RENDER TABELA ===================== */
+function renderInstrutores(lista) {
+    instrutoresCache = lista;
+
+    const tbody = document.getElementById("instructorsTableBody");
+    tbody.innerHTML = "";
+
+    lista.forEach(inst => {
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+            <td>${inst.ri}</td>
+            <td>${inst.firstName} ${inst.lastName}</td>
+            <td>${inst.birthDate}</td>
+            <td>${inst.email}</td>
+            <td>${inst.contact ?? "-"}</td>
+            <td>${inst.active ? "Ativo" : "Inativo"}</td>
+            <td class="actions">
+                <button onclick="editarInstructor(${inst.ri})">✏️</button>
+                <button onclick="abrirModalDelete(${inst.ri})">🗑️</button>
+            </td>
+        `;
+
+        tbody.appendChild(tr);
+    });
+}
+
+/* ===================== MODAL DELETE ===================== */
+function abrirModalDelete(ri) {
+    instructorSelecionado = instrutoresCache.find(i => i.ri === ri);
+
+    if (!instructorSelecionado) {
+        alert("Instrutor não encontrado");
+        return;
+    }
+
+    document.getElementById("del-name").innerText =
+        instructorSelecionado.firstName + " " + instructorSelecionado.lastName;
+
+    document.getElementById("del-email").innerText = instructorSelecionado.email;
+    document.getElementById("del-contact").innerText = instructorSelecionado.contact ?? "-";
+    document.getElementById("del-cpf").innerText = instructorSelecionado.cpf ?? "-";
+    document.getElementById("del-status").innerText =
+        instructorSelecionado.active ? "Ativo" : "Inativo";
+
+    document.getElementById("modal-delete-instructor").classList.add("active");
+}
+
+function fecharModalDelete() {
+    document.getElementById("modal-delete-instructor").classList.remove("active");
+    instructorSelecionado = null;
+}
+
+async function confirmarDelete() {
+    if (!instructorSelecionado) {
+        alert("Instrutor não selecionado");
+        return;
+    }
+
+    console.log("ENVIANDO DELETE:", instructorSelecionado.ri);
+
+    const resp = await fetch("/instructor/delete", {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            ri: instructorSelecionado.ri
+        })
+    });
+
+    console.log("STATUS:", resp.status);
+
+    const text = await resp.text();
+    console.log("RESPOSTA:", text);
+
+    if (!resp.ok) {
+        alert("Erro ao deletar");
+        return;
+    }
+
+    fecharModalDelete();
+    await getInscrutorEnable();
+    alert("Instrutor desativado com sucesso");
+}
+
+/* ===================== MODAL CADASTRO ===================== */
+document.addEventListener("click", e => {
+    if (e.target.id === "btnAbrirInstructor") {
+        document.getElementById("modal-instructor").classList.add("active");
+    }
+
+    if (e.target.id === "btnFechar") {
+        fecharModalCadastro();
+    }
+
+    if (e.target.classList.contains("modal")) {
+        fecharModalCadastro();
+        fecharModalDelete();
+    }
 });
 
+function fecharModalCadastro() {
+    document.getElementById("modal-instructor").classList.remove("active");
+}
+
+/* ===================== MODAL UPDATE ===================== */
+
+function editarInstructor(ri) {
+    const inst = instrutoresCache.find(i => i.ri === ri);
+
+    if (!inst) {
+        alert("Instrutor não encontrado");
+        return;
+    }
+
+    // Preenche os inputs
+    document.getElementById("edit-ri").value = inst.ri;
+    document.getElementById("edit-email").value = inst.email;
+    document.getElementById("edit-contact").value = inst.contact ?? "";
+
+    // Abre o modal
+    document.getElementById("modal-edit-instructor").classList.add("active");
+}
+
+function fecharModalEdit() {
+    document.getElementById("modal-edit-instructor").classList.remove("active");
+}
+
+function montarInstructorEditado() {
+    return {
+        ri: document.getElementById("edit-ri").value,
+        email: document.getElementById("edit-email").value,
+        contact: document.getElementById("edit-contact").value
+    };
+}
+
+async function salvarEdicaoInstructor() {
+    const instructor = montarInstructorEditado();
+
+    try {
+        const resp = await fetch("/instructor/update", {
+            method: "PUT",
+            headers: apiHeaders(),
+            body: JSON.stringify(instructor)
+        });
+
+        if (!resp.ok) throw new Error();
+
+        fecharModalEdit();
+        getInscrutorEnable(); // recarrega lista
+        alert("Instrutor atualizado com sucesso!");
+
+    } catch (e) {
+        console.error(e);
+        alert("Erro ao atualizar instrutor");
+    }
+}
 
 
-
+/* ===================== Start INSTRUCTOR ===================== */

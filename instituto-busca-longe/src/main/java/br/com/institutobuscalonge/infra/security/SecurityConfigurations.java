@@ -50,6 +50,9 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.DELETE, "/student/delete").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/instructor/register").hasRole("ADMIN")
 
+                        .requestMatchers(HttpMethod.DELETE, "/instructor/**").hasRole("ADMIN")
+
+
                         // Swagger
                         .requestMatchers(
                                 "/v3/api-docs/**",

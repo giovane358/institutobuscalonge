@@ -57,7 +57,7 @@ public class InstructorController {
 
         String encryptedPasword = new BCryptPasswordEncoder().encode(data.senha());
 
-        Instructor instructor = new Instructor(data.firstName(), data.firstName(), data.email(), encryptedPasword, data.contact(), data.cpf(), data.birthDate());
+        Instructor instructor = new Instructor(data.firstName(), data.lastName(), data.email(), encryptedPasword, data.contact(), data.cpf(), data.birthDate());
 
         if (user != null) {
             instructor.setCreatedBy(user);
@@ -105,36 +105,38 @@ public class InstructorController {
     }
 
 
-    @DeleteMapping(path = "/delete")
-    @Operation(summary = "Deletar", description = "Remove (ou desabilita) um instrutor do sistema. Pode receber id como parâmetro no body", method = "POST")
-    @ApiResponse(responseCode = "200", description = "Login realizado com sucesso")
-    @ApiResponse(responseCode = "400", description = "Não foi possível processar a sua solicitação")
-    @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
-    @ApiResponse(responseCode = "403", description = "Acesso negado")
-    @ApiResponse(responseCode = "401", description = "Dados incorretos")
-    public ResponseEntity<Instructor> deleteInstructor(Authentication authentication, @RequestBody @Valid InstructorDeleteDTO data){
-        if (authentication == null || !(authentication.getPrincipal() instanceof Auth)){
+    @DeleteMapping(
+            path = "/delete",
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<Instructor> deleteInstructor(
+            Authentication authentication,
+            @RequestBody @Valid InstructorDeleteDTO data
+    ) {
+        if (authentication == null || !(authentication.getPrincipal() instanceof Auth)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
         Auth authUser = (Auth) authentication.getPrincipal();
         UUID userId = authUser.getId();
 
-        Instructor instructor = instructorRepository.findById(data.ri()).orElse( null);
+        Instructor instructor = instructorRepository.findById(data.ri()).orElse(null);
 
-        if (instructor == null){
+        if (instructor == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        if (instructor.getCreatedBy() == null || !instructor.getCreatedBy().getId().equals(userId)){
+        if (instructor.getCreatedBy() == null ||
+                !instructor.getCreatedBy().getId().equals(userId)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         instructor.setActive(false);
         instructorRepository.save(instructor);
-        return ResponseEntity.ok(instructor);
 
+        return ResponseEntity.ok(instructor);
     }
+
 
     @PutMapping("/update")
     @Operation(summary = "Atualizar dados do instrutor", description = "Atualiza os dados de um instrutor existente. Enviar o id e os campos a alterar.", method = "PUT")

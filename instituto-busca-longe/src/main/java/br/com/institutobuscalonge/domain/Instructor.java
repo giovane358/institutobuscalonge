@@ -56,14 +56,15 @@ public class Instructor {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public Instructor(String firstName, String lastName, String email, String password, String contact, String birthDate, String cpf) {
+    public Instructor(String firstName, String lastName, String email, String password, String contact, String cpf, String birthDate ) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.contact = contact;
-        this.birthDate = birthDate;
         this.cpf = cpf;
+        this.birthDate = birthDate;
+
 
     }
 
