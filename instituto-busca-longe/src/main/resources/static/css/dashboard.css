@@ -112,6 +112,8 @@
      margin-top: 8px;
  }
 
+ 
+
  /* stilo barra pesquisa*/
  .top-bar {
      display: flex;
@@ -243,6 +245,16 @@
      z-index: 999;
  }
 
+ .modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
 
  /* quando abrir */
  .modal.active {
@@ -251,46 +263,80 @@
 
  /* Conteúdo do modal */
  .modal-content {
-     background: #fff;
-     padding: 20px;
-     width: 350px;
-     border-radius: 8px;
-     position: relative;
+    background: #ffffff;
+    width: 100%;
+    max-width: 400px;
+    padding: 24px 22px;
+    border-radius: 12px;
+    position: relative;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+    animation: modalFade 0.25s ease;
  }
+ @keyframes modalFade {
+    from {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
  /* Botão fechar */
  .close {
-     position: absolute;
-     right: 15px;
-     top: 10px;
-     font-size: 22px;
-     cursor: pointer;
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    font-size: 22px;
+    cursor: pointer;
+    color: #000;
  }
 
  /* Form */
  form {
-     display: flex;
-     flex-direction: column;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
  }
 
  form h2 {
-     align-items: center;
-     justify-content: center;
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #000;
+    text-align: left;
  }
 
  form input {
-     margin-bottom: 10px;
-     padding: 8px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid #cfcfcf;
+    font-size: 15px;
+    outline: none;
+    transition: border 0.2s ease;
  }
 
+ form input:focus {
+    border-color: #007bff;
+}
+
  form button {
-     padding: 10px;
-     background: #007bff;
-     border: none;
-     color: white;
-     cursor: pointer;
-     border-radius: 5px;
+    margin-top: 10px;
+    padding: 14px;
+    background: #007bff;
+    border: none;
+    border-radius: 10px;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
  }
+
+ form button:hover {
+    background: #0056b3;
+}
 
 .modal.active {
     display: flex;
@@ -305,5 +351,20 @@
 
 .btn.danger {
     background: #e53935;
-    color: #fff;
+    color: #ffffff;
+}
+
+.btn.danger:hover {
+    background: #c62828;
+}
+
+@media (max-width: 480px) {
+    .modal-content {
+        margin: 16px;
+        padding: 20px;
+    }
+
+    form h2 {
+        font-size: 22px;
+    }
 }

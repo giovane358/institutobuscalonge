@@ -1,11 +1,20 @@
-body {
+body{
     margin: 0;
     padding: 0;
     height: 100%;
-
+    
 }
 
-.slider {
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.slider{
     width: 100vw;
     height: 100vh;
     position: relative;
@@ -14,44 +23,40 @@ body {
     padding: 0;
 }
 
-.slides {
-    width: 400%;
-    /* 4 imagens = 400% */
+.slides{
+    width: 400%; /* 4 imagens = 400% */
     height: 100vh;
     display: flex;
     transition: margin-left 0.6s ease-in-out;
 }
 
-.slides input {
+.slides input{
     display: none;
 }
 
-.slide {
+.slide{
     width: 100vw;
     height: 100vh;
     position: relative;
     flex-shrink: 0;
-
+    
 }
 
-.slide img {
+.slide img{
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    /* garante que cobre a tela inteira */
+    object-fit: cover; /* garante que cobre a tela inteira */
     display: block;
 }
 
 /* TEXTO EM CIMA DA IMAGEM */
 .slide-text {
     position: absolute;
-    left: 300px;
-    /* distância do canto esquerdo */
-    top: 50%;
-    /* centralizado verticalmente */
+    left: 300px;        /* distância do canto esquerdo */
+    top: 50%;          /* centralizado verticalmente */
     transform: translateY(-50%);
     color: #fff;
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
 }
 
 .slide-text h2 {
@@ -66,56 +71,50 @@ body {
 }
 
 
-.manual-navigation {
+.manual-navigation{
     text-decoration: none;
     position: absolute;
-    bottom: 20px;
-    /* metade da altura */
-    left: 50%;
-    /* metade da largura */
-    transform: translate(-50%, -50%);
-    /* ajusta para o centro real */
+    bottom: 20px;     /* metade da altura */
+    left: 50%;      /* metade da largura */
+    transform: translate(-50%, -50%);  /* ajusta para o centro real */
     display: flex;
-    gap: 15px;
-    /* espaçamento entre os botões */
+    gap: 15px;      /* espaçamento entre os botões */
     z-index: 10;
 }
 
-.manual-btn {
+.manual-btn{
     text-decoration: none;
     border: 2px solid #f00303;
     padding: 5px;
     border-radius: 10px;
     cursor: pointer;
     transition: 1s;
-
+    
 }
 
-.manual-btn:not(:last-child) {
+.manual-btn:not(:last-child){
     margin-right: 40px;
 }
 
-.manual-btn:hover {
+.manual-btn:hover{
     background-color: #fff;
 }
 
-#radio1:checked~.first {
+#radio1:checked ~ .first{
     margin-left: 0;
 }
 
-#radio2:checked~.first {
+#radio2:checked ~ .first{
     margin-left: -25%;
 }
-
-#radio3:checked~.first {
+#radio3:checked ~ .first{
     margin-left: -50%;
 }
-
-#radio4:checked~.first {
+#radio4:checked ~ .first{
     margin-left: -75%;
 }
 
-.navigation-auto {
+.navigation-auto{
     position: absolute;
     width: 800px;
     margin-top: 360px;
@@ -123,29 +122,29 @@ body {
     justify-content: center;
 }
 
-.navigation-auto div:not(:last-child) {
+.navigation-auto div:not(:last-child){
     margin-right: 40px;
 }
 
-#radio1:checked~.navigation-auto .auto-btn1 {
+#radio1:checked ~ .navigation-auto .auto-btn1{
     background-color: #fff;
 }
 
-#radio2:checked~.navigation-auto .auto-btn2 {
+#radio2:checked ~ .navigation-auto .auto-btn2{
     background-color: #fff;
 }
 
-#radio3:checked~.navigation-auto .auto-btn3 {
+#radio3:checked ~ .navigation-auto .auto-btn3{
     background-color: #fff;
 }
 
-#radio4:checked~.navigation-auto .auto-btn4 {
+#radio4:checked ~ .navigation-auto .auto-btn4{
     background-color: #fff;
 }
 
 /*stilos da navegação*/
 
-.menu-link {
+.menu-link{
     text-decoration: none;
     color: var(--claro);
     font-weight: 500;
@@ -154,23 +153,24 @@ body {
 }
 
 header {
+    
+    background-color: #fff;
     position: fixed;
-    width: 90vw;
+    width: 100%;
     top: 0;
-    padding: 20px 50px;
+    padding: 5px 100px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     z-index: 9999;
-
+    
 }
-
 header nav ul {
     display: flex;
     gap: 48px;
 }
-
 header nav ul li {
+    list-style: none;
     cursor: pointer;
     position: relative;
     padding: 5px 0;
@@ -193,15 +193,34 @@ header nav ul li:hover::after {
     width: 100%;
 }
 
+header nav ul li a[href="login.html"] {
+    background-color: #2ecc71;     /* verde */
+    color: #fff;
+    padding: 6px 14px;             /* discreto, não cresce demais */
+    border-radius: 20px;           /* arredondado */
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+/* Hover sutil */
+header nav ul li a[href="login.html"]:hover {
+    background-color: #27ae60;
+    transform: scale(1.03);
+}
 /*fim do stilos da navegação*/
 
 .logo {
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.5rem;
     font-weight: 900;
-    color: #000000;
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    color: #000;
+}
 
+.logo img {
+    height: 40px;
 }
 
 
@@ -212,37 +231,33 @@ header nav ul li:hover::after {
     flex-direction: column;
     font-size: 2rem;
     font-weight: 900;
-    margin-top: 100px;
+    margin-top: 100px;  
     margin-bottom: 100px;
     margin-right: 150px;
     margin-left: 80px;
 }
 
 .inovacao {
-    padding: 40px;
-    /* afasta das laterais */
+    padding: 40px ; /* afasta das laterais */
     font-size: 1rem;
 }
 
 .inovacao ul {
+    text-align: center;
     color: #000;
     display: flex;
-    justify-content: space-between;
-    /* espaço entre eles */
-    gap: 20px;
-    /* espaço entre os itens */
-    list-style: none;
-    /* remove marcadores da lista */
+    justify-content: space-between; /* espaço entre eles */
+    gap: 20px;                      /* espaço entre os itens */
+    list-style: none;               /* remove marcadores da lista */
     padding: 0;
-
+    
 }
 
 .inovacao li {
-    flex: 1;
-    /* cada item ocupa a mesma largura */
-    background: #f5f5f5;
+    flex: 1;                        /* cada item ocupa a mesma largura */
+    background: #f5f5f5;            
     padding: 15px;
-    border-radius: 10px;
+    border-radius: 10px;            
 }
 
 
@@ -252,100 +267,75 @@ header nav ul li:hover::after {
 }
 
 .sobre {
-    text-align: center;
-    padding: 50px;
+     text-align: center;
+     padding: 50px;
 }
 
 .mission {
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 /* Estilo geral dos blocos */
 .mission-block {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
 }
 
 
 /* COLUNA DE TEXTO (H2 + PARÁGRAFO) */
 .mission-text {
-    max-width: 550px;
+   max-width: 550px;
+   color: #000;
 }
 
 .mission-text h2 {
-    font-size: 2rem;
-    margin-bottom: 10px;
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #0066ff;
 }
 
 .img-mis img {
-    width: 450px;
-    height: auto;
-    border-radius: 12px;
-    object-fit: cover;
+  width: 450px;
+  height: auto;
+  border-radius: 12px;
+  object-fit: cover;
 }
 
 /* --- BLOCO 1 (Nossa Missão): texto esquerda, imagem direita --- */
 .mission-block:first-child {
-    flex-direction: row;
-    /* texto → imagem */
+  flex-direction: row;      /* texto → imagem */
 }
 
 /* --- BLOCO 2 (Nossa Visão): texto direita, imagem esquerda --- */
 .mission-block:nth-child(2) {
-    flex-direction: row-reverse;
-    /* imagem ← texto */
-}
-
-/* Responsivo */
-@media (max-width: 768px) {
-
-    .mission-block,
-    .mission-block:nth-child(2) {
-        flex-direction: column;
-        /* empilha no mobile */
-        text-align: center;
-    }
-
-    .mission-text {
-        max-width: 100%;
-    }
-
-    .img-mis img {
-        width: 100%;
-    }
+  flex-direction: row-reverse;  /* imagem ← texto */
 }
 
 /*fim do stilo sobre nos imagens e paragrafos */
-
+ 
 /*stilo nossa historia*/
 .nv ul {
     color: #000;
     display: flex;
-    justify-content: space-between;
-    /* espaço entre eles */
-    gap: 20px;
-    /* espaço entre os itens */
-    list-style: none;
-    /* remove marcadores da lista */
+    justify-content: space-between; /* espaço entre eles */
+    gap: 20px;                      /* espaço entre os itens */
+    list-style: none;               /* remove marcadores da lista */
     padding: 20px;
-
+    
 }
 
 .nv li {
-    flex: 1;
-    /* cada item ocupa a mesma largura */
-    background: #f5f5f5;
-    /* opcional */
+    flex: 1;                        /* cada item ocupa a mesma largura */
+    background: #f5f5f5;            /* opcional */
     padding: 15px;
-    border-radius: 10px;
-    /* opcional */
+    border-radius: 10px;            /* opcional */
 }
 
 h1 {
@@ -360,56 +350,46 @@ h1 {
 
 .pg {
     text-align: center;
-    max-width: 800px;
-    /* ajuste como desejar */
-    margin: 0 auto;
-    /* centraliza o bloco */
+    max-width: 800px; /* ajuste como desejar */
+    margin: 0 auto;   /* centraliza o bloco */
     padding: 10px;
+    
 }
-
 /*fim stilo nossa historia*/
 
 /*stilo nossas atividades*/
 ul.down {
     flex-direction: column;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    /* 3 colunas */
-    gap: 20px;
-    /* espaçamento entre os itens */
-    list-style: none;
-    /* remove bolinhas */
+    grid-template-columns: repeat(3, 1fr); /* 3 colunas */
+    gap: 20px; /* espaçamento entre os itens */
+    list-style: none; /* remove bolinhas */
     padding: 0;
 
-}
+} 
 
 button {
-    display: block;
-    margin: 20px auto;
-    /* centraliza horizontalmente */
-    padding: 20px 50px;
-    /* tamanho agradável */
-    background: linear-gradient(90deg, #00f7ff, #0066ff);
-    color: #000;
-    border: none;
-    border-radius: 30px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    width: fit-content;
-    /* impede de ocupar toda a tela */
-    text-align: center;
-
+  display: block;
+  margin: 20px auto;     /* centraliza horizontalmente */
+  padding: 20px 50px;    /* tamanho agradável */
+  background: linear-gradient(90deg, #00f7ff, #0066ff);
+  color: #000;
+  border: none;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: fit-content;    /* impede de ocupar toda a tela */
+  text-align: center;
+  
 }
-
 /*fim stilo nossas atividades*/
 
 /*stilo proximos evento*/
-.projeto {
+.projeto{
     padding: 0 1rem;
 }
-
-.projetos-titulo {
+.projetos-titulo{
     text-align: center;
     font-size: 2.5rem;
     margin-bottom: 50px;
@@ -419,13 +399,12 @@ button {
 
 }
 
-.projetos-card:hover {
+.projetos-card:hover{
     box-shadow: 0 10px 20px #000;
     transform: translateY(-10px) scale(1.03);
 
 }
-
-.projeto-ciaxa {
+.projeto-ciaxa{
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
@@ -433,81 +412,85 @@ button {
     margin: 0 auto;
     padding: 30px;
 }
-
-.projetos-card {
-    background: #000;
+.projetos-card{
+    background: #fff;
     border-radius: 16px;
     backdrop-filter: blur(5px);
-    border: 1px solid;
+    border: 1px solid ;
     overflow: hidden;
     transition: all 0.5s ease;
     cursor: pointer;
 
 }
-
-.projeto-imagen {
+.projeto-imagen{
     height: 300px;
     width: 100%;
     object-fit: cover;
 
 }
-
-.info-projeto {
+.info-projeto{
     margin-bottom: 10px;
 
 }
-
-.paragrafo-projeto {
-    color: #fff;
+.paragrafo-projeto{
+    color: #000;
     line-height: 1.25rem;
 
 }
 
-.caixa-texto-projeto {
+.caixa-texto-projeto{
     padding: 2rem;
-
+    display: flex;
+    flex-direction: column;
 }
 
+.caixa-texto-projeto .btn-projeto {
+    align-self: flex-end;
+}
+
+.btn-projeto {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #808080; /* cor principal */
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-projeto:hover {
+    background-color: #808080;
+    transform: translateY(-2px);
+}
 /*fim stilo proximos evento*/
 
 /*stilo footer*/
 
-footer {
-    width: 100%;
-    padding: 20px 40px;
-    background: #f5f5f5;
-}
-
-/* Área que vai organizar os itens */
 .footer-content {
-    width: 100%;
     display: flex;
-    justify-content: space-between;
-    /* esquerda ↔ centro */
+    justify-content: space-between; /* esquerda | centro | direita */
     align-items: flex-start;
-    /* tudo grudado no topo */
+    width: 80%;
+    margin: 30px;
 }
 
-/* LOGO totalmente à esquerda */
 .logo-footer {
-    font-size: 22px;
-    font-weight: bold;
-    margin-left: 0;
+    max-width: 300px;
 }
 
-/* CONTATO fica exatamente no centro do footer */
 .contact {
-
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    /* centraliza de verdade */
     text-align: center;
-    margin-top: 0;
 }
 
-.direitos {
+.social-box {
     text-align: center;
-    color: #000;
-
+    
 }
+
+.dereitos {
+    text-align: center;
+    align-items: center;
+}
+   

@@ -7,12 +7,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Instituto Busca longe</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/homePage.css">
-        <link rel="" </head>
+    </head>
 
     <body>
         <!--navegacao-->
         <header>
-            <div class="logo">Istituto Busca Longe</div>
+            <div class="logo">
+             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfcAO1-rNmarJlfSMP5GZqFD1bQwrxEbZ80Q&s">
+             Istituto Busca Longe</div>
             <nav>
                 <ul>
                     <li><a href="#inicio" class="menu-link">Inicio</a></li>
@@ -80,14 +82,17 @@
             <div class="inovacao">
                 <ul>
                     <li>
+                        <img src="https://img.icons8.com/?size=100&id=We7ortd4INDY&format=png&color=000000">
                         <h3>Comunidade</h3>
                         <p>Fortalecemos os laços comunitários através de ações integradas e participativas.</p>
                     </li>
                     <li>
+                        <img src="https://img.icons8.com/?size=100&id=GzBoJfAXLasP&format=png&color=000000">
                         <h3>Inovação</h3>
                         <p>Utilizamos métodos inovadores para promover aprendizado e desenvolvimento.</p>
                     </li>
                     <li>
+                        <img src="https://img.icons8.com/?size=100&id=LUj2NNfR6TwH&format=png&color=000000">
                         <h3>Impacto Social</h3>
                         <P>Geramos impacto positivo e duradouro na vida de centenas de pessoas.</p>
                     </li>
@@ -119,7 +124,7 @@
                 <!--Bloco 2 - visãso -->
                 <div class="mission-block">
                     <div class="img-mis">
-                        <img src="https://v0-instituto-busca-longe-website.vercel.app/children-learning-together.jpg">
+                        <img src="https://thumbs.dreamstime.com/b/crian%C3%A7as-felizes-pulando-no-parque-lazer-infantil-e-pessoas-conceituam-grupo-de-brincando-240520384.jpg">
                     </div>
 
                     <div class="mission-text">
@@ -181,26 +186,32 @@
                 <div class="nv-nv">
                     <ul class="down">
                         <li>
+                            <img src="https://img.icons8.com/?size=100&id=Utu32Z-yKkor&format=png&color=0000000">
                             <h3>Reforço Escolar</h3>
                             <p>Aulas de apoio pedagógico para crianças e adolescentes em diversas disciplinas.</p>
                         </li>
                         <li>
+                            <img src="https://img.icons8.com/?size=100&id=29eTdOmkvnQw&format=png&color=000000">
                             <h3>Oficinas de Arte</h3>
                             <p>Desenvolvimento da criatividade através de pintura, desenho e artesanato.</p>
                         </li>
                         <li>
+                            <img src="https://img.icons8.com/?size=100&id=9772&format=png&color=000000">
                             <h3>Música e Dança</h3>
                             <P>Aulas de instrumentos musicais e dança para todas as idades.</p>
                         </li>
                         <li>
+                            <img src="https://img.icons8.com/?size=100&id=9821&format=png&color=000000">
                             <h3>Esportes</h3>
                             <p>Práticas esportivas incluindo futebol, vôlei, basquete e artes marciais.</p>
                         </li>
                         <li>
+                            <img src="https://img.icons8.com/?size=100&id=9913&format=png&color=000000">
                             <h3>Informática</h3>
                             <p>Cursos de informática básica e avançada para inclusão digital.</p>
                         </li>
                         <li>
+                            <img src="https://img.icons8.com/?size=100&id=Ay2vgBhW25ic&format=png&color=000000">
                             <h3>Desenvolvimento Social</h3>
                             <p>Workshops sobre cidadania, liderança e desenvolvimento pessoal.</p>
                         </li>
@@ -224,6 +235,8 @@
                         <h3 class="info-projeto">Festival de talento</h3>
                         <p class="paragrafo-projeto">Apresentação dos talentos desenvolvidos pelos alunos nas oficinas
                             de arte, música e dança.</p>
+                        <P>14 de março<br> ás: 14:00<br> Auditório princpal</P>
+                        <a href="#" class="btn-projeto">Em Breve </a>
                     </div>
                 </div>
                 <div class="projetos-card">
@@ -233,6 +246,8 @@
                         <h3 class="info-projeto">Torneio Esportivo Comunitario</h3>
                         <p class="paragrafo-projeto">Competição amigável entre equipes da comunidade em diversas
                             modalidades esportivas.</p>
+                        <P>14 de março<br> ás: 14:00<br> Auditório princpal</P>
+                        <a href="#" class="btn-projeto">Em Breve </a>
                     </div>
                 </div>
                 <div class="projetos-card">
@@ -242,6 +257,8 @@
                         <h3 class="info-projeto">Feira De Ciências e tecnologia</h3>
                         <p class="paragrafo-projeto">Exposição de projetos científicos e tecnológicos desenvolvidos
                             pelos estudantes.</p>
+                        <P>14 de março<br> ás: 14:00<br> Auditório princpal</P>
+                        <a href="#" class="btn-projeto">Em Breve </a>
                     </div>
                 </div>
             </div>
@@ -284,20 +301,33 @@
         </section>
         <hr>
         <footer>
-            <div class="footer-content">
-                <div class="logo-footer">Istituto Busca Longe
-                    <p class="logo-footer">Transformando vidas através de atividades e eventos<br> que promovem
-                        desenvolvimento social e comunitário.</p>
-                </div>
-                <div class="contact">
-                    <h3>contato</h3>
-                    Rua Exemplo, 123 - Centro<br>
-                    São Paulo, SP - CEP 01234-567<br>
-                    (11) 1234-5678<br>
-                    ontato@buscalonge.org.br<br>
-                </div>
-            </div>
-        </footer>
+  <div class="footer-content">
+
+    <div class="logo-footer">
+      Instituto Busca Longe
+      <p>Transformando vidas através de atividades e eventos<br>
+      que promovem desenvolvimento social e comunitário.</p>
+    </div>
+
+    <div class="contact">
+      <h3>Contato</h3>
+      Rua Exemplo, 123 - Centro<br>
+      São Paulo, SP - CEP 01234-567<br>
+      (11) 1234-5678<br>
+      contato@buscalonge.org.br
+    </div>
+
+    <div class="social-box">
+      <h2>Redes Sociais</h2>
+      <div class="social">
+        <a href="#"><img src="https://img.icons8.com/ios-filled/40/instagram-new.png"></a>
+        <a href="#"><img src="https://img.icons8.com/ios-filled/40/whatsapp.png"></a>
+        <a href="#"><img src="https://img.icons8.com/ios-filled/40/facebook-new.png"></a>
+      </div>
+    </div>
+
+  </div>
+</footer>
         <hr>
         <p class="direitos">&copy; 2025 Instituto Busca Longe. Todos os direitos reservados.</p>
         <script src="${pageContext.request.contextPath}/js/app.js"></script>

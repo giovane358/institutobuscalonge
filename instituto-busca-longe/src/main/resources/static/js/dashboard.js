@@ -2,6 +2,8 @@ const token = localStorage.getItem("token");
 
 let instrutoresCache = [];
 let instructorSelecionado = null;
+let studentCache = [];
+let studentSelecionado = null;
 
 /* ===================== HEADERS ===================== */
 function apiHeaders() {
@@ -258,4 +260,246 @@ async function salvarEdicaoInstructor() {
 }
 
 
-/* ===================== Start INSTRUCTOR ===================== */
+/* ===================== End INSTRUCTOR ===================== */
+
+
+
+/* ===================== CADASTRO ===================== */
+function student() {
+    return {
+        firstName: document.getElementById("firstName_student").value,
+        lastName: document.getElementById("lastName_student").value,
+        email: document.getElementById("email_student").value,
+        birthDate: document.getElementById("birthDate_student").value,
+        contact: document.getElementById("contact_student").value,
+        nameDaddy: document.getElementById("nameDaddy_student").value,
+        nameMom: document.getElementById("nameMom_student").value
+    };
+}
+
+
+async function registerStudent() {
+    const stu = student();
+
+    const resp = await fetch("/student/register", {
+        method: "POST",
+        headers: apiHeaders(),
+        body: JSON.stringify(stu)
+    });
+
+    if (!resp.ok) throw new Error("Erro ao cadastrar");
+
+    fecharModalCadastro();
+    getInscrutorEnable();
+}
+
+/* ===================== MODAL CADASTRO Estudantes ===================== */
+document.addEventListener("click", e => {
+    if (e.target.id === "btnAbrirStudent") {
+        document.getElementById("modal-student").classList.add("active");
+    }
+
+    if (e.target.id === "btnFechar") {
+        fecharModalCadastro();
+    }
+
+    if (e.target.classList.contains("modal")) {
+        fecharModalCadastro();
+        fecharModalDelete();
+    }
+});
+
+function fecharModalCadastro() {
+    document.getElementById("modal-student").classList.remove("active");
+}
+
+/* ===================== LISTAR ATIVOS ===================== */
+async function fetchStudentEnable() {
+    const resp = await fetch("/student/list/enabled", {
+        method: "GET",
+        headers: apiHeaders()
+    });
+
+    if (!resp.ok) throw new Error("Erro ao buscar");
+
+    return resp.json();
+}
+
+async function getStudentEnable() {
+    try {
+        const lista = await fetchStudentEnable();
+        renderStudent(lista);
+    } catch (e) {
+        console.error(e);
+        alert("Erro ao carregar instrutores ativos");
+    }
+}
+
+async function fetchStudentDisabled() {
+    const resp = await fetch("/student/list/disabled", {
+        method: "GET",
+        headers: apiHeaders()
+    });
+
+    if (!resp.ok) throw new Error("Erro ao buscar");
+
+    return resp.json();
+}
+
+async function getEstudantDisabled() {
+    try {
+        const lista = await fetchStudentDisabled();
+        renderStudent(lista);
+    } catch (e) {
+        console.error(e);
+        alert("Erro ao carregar instrutores ativos");
+    }
+}
+
+
+/* ===================== RENDER TABELA ===================== */
+function renderStudent(lista) {
+    studentCache = lista;
+
+    const tbody = document.getElementById("studentTableBody");
+    tbody.innerHTML = "";   
+
+    lista.forEach(stud => {
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+            <td>${stud.ra}</td>
+            <td>${stud.firstName} ${stud.lastName}</td>
+            <td>${stud.birthDate}</td>
+            <td>${stud.email}</td>
+            <td>${stud.contact ?? "-"}</td>
+            <td>${stud.active ? "Ativo" : "Inativo"}</td>
+            <td class="actions">
+                <button onclick="editarStudent(${stud.ra})">✏️</button>
+                <button onclick="abrirModalDelete(${stud.ra})">🗑️</button>
+            </td>
+        `;
+
+        tbody.appendChild(tr);
+    });
+}
+
+/* ===================== MODAL DELETE ===================== 
+function abrirModalDelete(ra) {
+    studentSelecionado = studentCache.find(i => i.ra === ra);
+
+    if (!studentSelecionado) {
+        alert("estudante não encontrado");
+        return;
+    }
+
+    document.getElementById("del-name").innerText =
+        studentSelecionado.firstName + " " + studentSelecionado.lastName;
+
+    document.getElementById("del-email").innerText = studentSelecionado.email;
+    document.getElementById("del-contact").innerText = studentSelecionado.contact ?? "-";
+    document.getElementById("del-status").innerText =
+        studentSelecionado.active ? "Ativo" : "Inativo";
+
+    document.getElementById("modal-delete-student").classList.add("active");
+}
+
+function fecharModalDelete() {
+    document.getElementById("modal-delete-student").classList.remove("active");
+    studentSelecionado = null;
+}
+
+async function confirmarDelete() {
+    if (!studentSelecionado) {
+        alert("Estudante não selecionado");
+        return;
+    }
+
+    console.log("ENVIANDO DELETE:", studentSelecionado.ra);
+
+    const resp = await fetch("/student/delete", {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            ra: studentSelecionado.ra
+        })
+    });
+
+    console.log("STATUS:", resp.status);
+
+    const text = await resp.text();
+    console.log("RESPOSTA:", text);
+
+    if (!resp.ok) {
+        alert("Erro ao deletar");
+        return;
+    }
+
+    fecharModalDelete();
+    await getStudentEnable();
+    alert("Estudente desativado com sucesso");
+}*/
+
+/* ===================== MODAL UPDATE ===================== */
+
+function editarStudent(ra) {
+    const estu = studentCache.find(i => i.ra === ra);
+
+    if (!estu) {
+        alert("Estudente não encontrado");
+        return;
+    }
+
+    // Preenche os inputs
+    document.getElementById("edit-ra").value = estu.ra;
+    document.getElementById("edit-email").value = estu.email;
+    document.getElementById("edit-contact").value = estu.contact ?? "";
+
+    // Abre o modal
+    document.getElementById("modal-edit-student").classList.add("active");
+}
+
+function fecharModalEdit() {
+    document.getElementById("modal-edit-student").classList.remove("active");
+}
+
+function montarStudentEditado() {
+    return {
+        firstName: document.getElementById("firstName_student").value,
+        lastName: document.getElementById("lastName_student").value,
+        email: document.getElementById("email_student").value,
+        birthDate: document.getElementById("birthDate_student").value,
+        contact: document.getElementById("contact_student").value,
+    };
+}
+
+async function salvarEdicaoStudent() {
+    const student = montarStudentEditado();
+
+    try {
+        const resp = await fetch("/student/update", {
+            method: "PUT",
+            headers: apiHeaders(),
+            body: JSON.stringify(student)
+        });
+
+        if (!resp.ok) throw new Error();
+
+        fecharModalEdit();
+        getStudentEnabled(); // recarrega lista
+        alert("Estudante atualizado com sucesso!");
+
+    } catch (e) {
+        console.error(e);
+        alert("Erro ao atualizar Estudante");
+    }
+}
+
+
+
+
+
+

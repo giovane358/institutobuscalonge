@@ -32,37 +32,28 @@
                         <input type="text" placeholder="Pesquisar..." />
                         <img width="25" src="https://img.icons8.com/ios-glyphs/30/search--v1.png">
                     </div>
+
                     <div class="buttons">
-                        <button id="btn-todos" class="btn active">Todos</button>
-                        <button id="btn-ativos" class="btn inactive">Ativos</button>
-                        <button id="btn-inativos" class="btn inactive">Inativos</button>
-                        <button class="add-btn">➕ Adicionar</button>
+                        <button  class="btn active">Todos</button>
+                        <button  class="btn inactive" onclick="getStudentEnable()">Ativos</button>
+                        <button  class="btn inactive" onclick="getEstudantDisabled()">Inativos</button>
+                        <button  class="btn active" id="btnAbrirStudent">➕ Adicionar</button>
                     </div>
                 </div>
                 <div class="card">
-                    <table id="studentsTable">
+                    <table>
                         <thead>
                             <tr>
-                                <th>Matrícula</th>
+                                <th>Ra</th>
                                 <th>Nome</th>
+                                <th>Data de Nascimento</th>
                                 <th>Email</th>
-                                <th>Curso</th>
+                                <th>Telefone</th>
                                 <th>Status</th>
                                 <th>Ações</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>001</td>
-                                <td>João Silva</td>
-                                <td>joao@email.com</td>
-                                <td>Informática</td>
-                                <td><span class="status ativo">Ativo</span></td>
-                                <td class="actions">
-                                    <button class="edit-btn">✏️</button>
-                                    <button class="delete-btn">🗑️</button>
-                                </td>
-                            </tr>
+                        <tbody id="studentTableBody">  
                         </tbody>
                     </table>
                 </div>
@@ -92,6 +83,7 @@
                                 <th>Telefone</th>
                                 <th>Status</th>
                                 <th>Ações</th>
+                
                             </tr>
                         </thead>
                         <tbody id="instructorsTableBody">
@@ -109,9 +101,9 @@
                     </div>
                     <div class="buttons">
                         <button class="btn active">Todos</button>
-                        <button class="btn inactive">Ativos</button>
-                        <button class="btn inactive">Inativos</button>
-                        <button class="add-btn">➕ Adicionar</button>
+                        <button class="btn inactive" onclick="getSalasEnable()">Ativos</button>
+                        <button class="btn inactive" onclick="getSalasDisabled()">Inativos</button>
+                        <button class="add-btn" id="btnAbrirSalas">➕ Adicionar</button>
                     </div>
                 </div>
                 <div class="card">
@@ -151,9 +143,9 @@
                     </div>
                     <div class="buttons">
                         <button class="btn active">Todos</button>
-                        <button class="btn inactive">Ativos</button>
-                        <button class="btn inactive">Inativos</button>
-                        <button class="add-btn">➕ Adicionar</button>
+                        <button class="btn inactive" onclick="getEventosEnable()">Ativos</button>
+                        <button class="btn inactive" onclick="getEventosDisabled()">Inativos</button>
+                        <button class="btn inactive" id="btnAbrirEventos">➕ Adicionar</button>
                     </div>
                 </div>
                 <div class="card">
@@ -168,17 +160,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Palestra</td>
-                                <td>10/02/2025</td>
-                                <td>Auditório</td>
-                                <td><span class="status ativo">Ativo</span></td>
-                                <td class="actions">
-                                    <button>✏️</button>
-                                    <button>🗑️</button>
-                                </td>
-                            </tr>
-                        </tbody>
+                        </tbody id="eventosTableBody">
                     </table>
                 </div>
             </div>
@@ -326,6 +308,91 @@
                     </div>
                 </div>
             </div>
+
+            <!---modal-Estudnates-->
+            <div class="modal" id="modal-student">
+                <div class="modal-content">
+                    <span class="close" id="btnFechar">&times;</span>
+                    <h2>Cadastro</h2>
+
+                    <form id="formsStudent">
+                        <div class="input-box">
+                            <input placeholder="Primeiro Nome" type="text" id="firstName_student">
+                        </div>
+
+                        <div class="input-box">
+                            <input placeholder="Último Nome" type="text" id="lastName_student">
+                        </div>
+
+                        <div class="input-box">
+                            <input placeholder="Email" type="email" id="email_student">
+                        </div>
+
+                        <div class="input-box">
+                            <input placeholder="Contato" type="text" id="contact_student">
+                        </div>
+
+                        <div class="input-box">
+                            <input placeholder="nameDaddy" type="text" id="nameDaddy_student">
+                        </div>
+
+                        <div class="input-box">
+                            <input placeholder="nameMom" type="text" id="nameMom_student">
+                        </div>
+
+                        <div class="input-box">
+                            <input placeholder="Data de Nascimento" type="date" id="birthDate_student">
+                        </div>
+
+                        <button type="submit" onclick="registerStudent()">Enviar</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- MODAL Atualizar Estudentes -->
+            <div class="modal" id="modal-edit-student">
+                <div class="modal-content">
+                    <span class="close" onclick="fecharModalEdit()">&times;</span>
+
+                    <h2>Editar Estudentes</h2>
+
+                    <!-- RI escondido -->
+                    <input type="hidden" id="edit-ra">
+
+                          <div class="input-box">
+                            <input placeholder="Último Nome" type="text" id="lastName_student">
+                        </div>
+
+                    <div class="input-box">
+                            <input placeholder="Último Nome" type="text" id="lastName_student">
+                        </div>
+
+                    <div class="input-box">
+                        <input type="email" id="edit-email" placeholder="Email_student">
+                    </div>
+
+                    <div class="input-box">
+                        <input type="text" id="edit-contact" placeholder="Contato_student">
+                    </div>
+
+                        <div class="input-box">
+                            <input placeholder="Data de Nascimento" type="date" id="birthDate_student">
+                        </div>
+
+
+                    <div class="modal-actions">
+                        <button class="btn inactive" onclick="fecharModalEdit()">Cancelar</button>
+                        <button class="btn active" onclick="salvarEdicaoStudent()">Salvar</button>
+                    </div>
+                </div>
+            </div>
+
+           
+
+             
+           
+
+
 
 
             <script src="${pageContext.request.contextPath}/js/dashboard.js"></script>
