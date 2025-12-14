@@ -471,9 +471,9 @@ button {
 .footer-content {
     display: flex;
     justify-content: space-between; /* esquerda | centro | direita */
-    align-items: flex-start;
-    width: 80%;
-    margin: 30px;
+    align-items: center;
+    width: 100%;
+   padding: 4% 4%;
 }
 
 .logo-footer {
@@ -489,7 +489,7 @@ button {
     
 }
 
-.dereitos {
+.direitos {
     text-align: center;
     align-items: center;
 }

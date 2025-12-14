@@ -58,7 +58,7 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
 
-    @PutMapping(name = "/update")
+    @PutMapping(path = "/update")
     public ResponseEntity<Student> updateStudents(Authentication authentication, @RequestBody @Valid StudentUpdateDTO data) {
         // pega Auth do Authentication (se presente)
         if (authentication == null || !(authentication.getPrincipal() instanceof Auth)) {

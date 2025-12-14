@@ -113,7 +113,7 @@ public class ClassRoomController {
         return ResponseEntity.ok(classRoomsList);
     }
 
-    @GetMapping(path = "/List/disnable")
+    @GetMapping(path = "/list/disabled")
     @Operation(summary = "Listar salas desabilitadas", description = "Retorna salas desabilitadas.")
     @ApiResponse(responseCode = "200", description = "Login realizado com sucesso")
     @ApiResponse(responseCode = "400", description = "Não foi possível processar a sua solicitação")

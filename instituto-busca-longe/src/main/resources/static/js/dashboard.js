@@ -1,9 +1,14 @@
 const token = localStorage.getItem("token");
 
-let instrutoresCache = [];
+let instructorCache = [];
 let instructorSelecionado = null;
+
 let studentCache = [];
 let studentSelecionado = null;
+
+let classRoomCache = [];
+let classRoomSelecionado = null;
+
 
 /* ===================== HEADERS ===================== */
 function apiHeaders() {
@@ -262,7 +267,7 @@ async function salvarEdicaoInstructor() {
 
 /* ===================== End INSTRUCTOR ===================== */
 
-
+/* ===================== Start Students ===================== */
 
 /* ===================== CADASTRO ===================== */
 function student() {
@@ -331,7 +336,7 @@ async function getStudentEnable() {
         renderStudent(lista);
     } catch (e) {
         console.error(e);
-        alert("Erro ao carregar instrutores ativos");
+        alert("Erro ao carregar Estudantes ativos");
     }
 }
 
@@ -352,17 +357,16 @@ async function getEstudantDisabled() {
         renderStudent(lista);
     } catch (e) {
         console.error(e);
-        alert("Erro ao carregar instrutores ativos");
+        alert("Erro ao carregar Estudantes ativos");
     }
 }
-
 
 /* ===================== RENDER TABELA ===================== */
 function renderStudent(lista) {
     studentCache = lista;
 
     const tbody = document.getElementById("studentTableBody");
-    tbody.innerHTML = "";   
+    tbody.innerHTML = "";
 
     lista.forEach(stud => {
         const tr = document.createElement("tr");
@@ -376,7 +380,7 @@ function renderStudent(lista) {
             <td>${stud.active ? "Ativo" : "Inativo"}</td>
             <td class="actions">
                 <button onclick="editarStudent(${stud.ra})">✏️</button>
-                <button onclick="abrirModalDelete(${stud.ra})">🗑️</button>
+                <button onclick="abrirModalDeleteStudent(${stud.ra})">🗑️</button>
             </td>
         `;
 
@@ -384,32 +388,29 @@ function renderStudent(lista) {
     });
 }
 
-/* ===================== MODAL DELETE ===================== 
-function abrirModalDelete(ra) {
+/* ===================== MODAL DELETE ===================== */
+function abrirModalDeleteStudent(ra) {
     studentSelecionado = studentCache.find(i => i.ra === ra);
 
     if (!studentSelecionado) {
-        alert("estudante não encontrado");
+        alert("Estudante não encontrado");
         return;
     }
 
-    document.getElementById("del-name").innerText =
-        studentSelecionado.firstName + " " + studentSelecionado.lastName;
+    document.getElementById("del-nameStudent").innerText = studentSelecionado.firstName + " " + studentSelecionado.lastName;
+    document.getElementById("del-emailStudent").innerText = studentSelecionado.email;
+    document.getElementById("del-contactStudent").innerText = studentSelecionado.contact ?? "-";
+    document.getElementById("del-statusStudent").innerText = studentSelecionado.active ? "Ativo" : "Inativo";
 
-    document.getElementById("del-email").innerText = studentSelecionado.email;
-    document.getElementById("del-contact").innerText = studentSelecionado.contact ?? "-";
-    document.getElementById("del-status").innerText =
-        studentSelecionado.active ? "Ativo" : "Inativo";
-
-    document.getElementById("modal-delete-student").classList.add("active");
+    document.getElementById("modal-delete-students").classList.add("active");
 }
 
-function fecharModalDelete() {
-    document.getElementById("modal-delete-student").classList.remove("active");
+function fecharModalDeleteStudent() {
+    document.getElementById("modal-delete-students").classList.remove("active");
     studentSelecionado = null;
 }
 
-async function confirmarDelete() {
+async function confirmarDeleteStudent() {
     if (!studentSelecionado) {
         alert("Estudante não selecionado");
         return;
@@ -417,7 +418,7 @@ async function confirmarDelete() {
 
     console.log("ENVIANDO DELETE:", studentSelecionado.ra);
 
-    const resp = await fetch("/student/delete", {
+    const resp = await fetch("/student/delet", {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
@@ -438,58 +439,61 @@ async function confirmarDelete() {
         return;
     }
 
-    fecharModalDelete();
+    fecharModalDeleteStudent();
     await getStudentEnable();
     alert("Estudente desativado com sucesso");
-}*/
+}
+
+
 
 /* ===================== MODAL UPDATE ===================== */
 
-function editarStudent(ra) {
-    const estu = studentCache.find(i => i.ra === ra);
 
-    if (!estu) {
-        alert("Estudente não encontrado");
+/* ===================== MODAL UPDATE ===================== */
+function editarStudent(ra) {
+    const stud = studentCache.find(i => i.ra === ra);
+
+    if (!stud) {
+        alert("Estudante não encontrado");
         return;
     }
 
     // Preenche os inputs
-    document.getElementById("edit-ra").value = estu.ra;
-    document.getElementById("edit-email").value = estu.email;
-    document.getElementById("edit-contact").value = estu.contact ?? "";
+    document.getElementById("edit-raStudent").value = stud.ra;
+    document.getElementById("edit-emailStudent").value = stud.email;
+    document.getElementById("edit-contactStudent").value = stud.contact ?? "";
 
     // Abre o modal
     document.getElementById("modal-edit-student").classList.add("active");
 }
 
-function fecharModalEdit() {
+function fecharModalEditStudent() {
     document.getElementById("modal-edit-student").classList.remove("active");
 }
 
 function montarStudentEditado() {
     return {
-        firstName: document.getElementById("firstName_student").value,
-        lastName: document.getElementById("lastName_student").value,
-        email: document.getElementById("email_student").value,
-        birthDate: document.getElementById("birthDate_student").value,
-        contact: document.getElementById("contact_student").value,
+        ra: parseInt(document.getElementById("edit-raStudent").value, 10),
+        email: document.getElementById("edit-emailStudent").value,
+        contact: document.getElementById("edit-contactStudent").value
     };
 }
 
+
 async function salvarEdicaoStudent() {
-    const student = montarStudentEditado();
+    const stud = montarStudentEditado();
 
     try {
         const resp = await fetch("/student/update", {
             method: "PUT",
             headers: apiHeaders(),
-            body: JSON.stringify(student)
+            body: JSON.stringify(stud)
         });
 
         if (!resp.ok) throw new Error();
 
         fecharModalEdit();
-        getStudentEnabled(); // recarrega lista
+        getStudentEnable(); // recarrega lista
         alert("Estudante atualizado com sucesso!");
 
     } catch (e) {
@@ -498,7 +502,256 @@ async function salvarEdicaoStudent() {
     }
 }
 
+/* ===================== End Students ===================== */
 
+
+/* ===================== Start CLASSROOM ===================== */
+
+/* ===================== CADASTRO ===================== */
+function classRoom() {
+    return {
+        title: document.getElementById("titleClassRoom").value,
+        description: document.getElementById("descriptionClassRoom").value,
+        capacity: document.getElementById("capacityClassRoom").value,
+        duration: document.getElementById("durationClassRoom").value,
+        address: document.getElementById("addressClassRoom").value,
+        level: document.getElementById("levelClassRoom").value,
+        setInstructorBy: document.getElementById("setInstructorByClassRoom").value
+    };
+}
+
+async function registerClassRoom() {
+    const room = classRoom();
+
+    const resp = await fetch("/classRoom/register", {
+        method: "POST",
+        headers: apiHeaders(),
+        body: JSON.stringify(room)
+    });
+
+    if (!resp.ok) throw new Error("Erro ao cadastrar");
+
+    fecharModalCadastro();
+    getInscrutorEnable();
+}
+
+/* ===================== MODAL CADASTRO ===================== */
+document.addEventListener("click", e => {
+    if (e.target.id === "btnAbrirClassRoom") {
+        document.getElementById("modal-classRoom").classList.add("active");
+    }
+
+    if (e.target.id === "btnFechar") {
+        fecharModalCadastro();
+    }
+
+    if (e.target.classList.contains("modal")) {
+        fecharModalCadastro();
+        fecharModalDelete();
+    }
+});
+
+function fecharModalCadastro() {
+    document.getElementById("modal-classRoom").classList.remove("active");
+}
+
+
+/* ===================== LISTAR ATIVOS ===================== */
+async function fetchClassRoomEnable() {
+    const resp = await fetch("/classRoom/list/enable", {
+        method: "GET",
+        headers: apiHeaders()
+    });
+
+    if (!resp.ok) throw new Error("Erro ao buscar");
+
+    return resp.json();
+}
+
+async function getClassRoomEnable() {
+    try {
+        const lista = await fetchClassRoomEnable();
+        renderClassRoom(lista);
+    } catch (e) {
+        console.error(e);
+        alert("Erro ao carregar Sala ativos");
+    }
+}
+
+/* ===================== LISTAR Inativos ===================== */
+async function fetchClassRoomDisabled() {
+    const resp = await fetch("/classRoom/list/disabled", {
+        method: "GET",
+        headers: apiHeaders()
+    });
+
+    if (!resp.ok) throw new Error("Erro ao buscar");
+
+    return resp.json();
+}
+
+async function getClassRoomDisabled() {
+    try {
+        const lista = await fetchClassRoomDisabled();
+        renderClassRoom(lista);
+    } catch (e) {
+        console.error(e);
+        alert("Erro ao carregar Sala ativos");
+    }
+}
+
+/* ===================== RENDER TABELA ===================== */
+function renderClassRoom(lista) {
+    classRoomCache = lista;
+
+    const tbody = document.getElementById("classRoomTableBody");
+    tbody.innerHTML = "";
+
+    lista.forEach(room => {
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+            <td>${room.id}</td>
+            <td>${room.title}</td>
+            <td>${room.description}</td>
+            <td>${room.capacity}</td>
+            <td>${room.duration}</td>
+            <td>${room.address ?? "-"}</td>
+            <td>${room.level}</td>
+            <td>${room.active ? "Ativo" : "Inativo"}</td>
+            <td class="actions">
+                <button onclick="editarClassRoom(${room.id})">✏️</button>
+                <button onclick="abrirModalDeleteClassRoom(${room.id})">🗑️</button>
+            </td>
+        `;
+
+        tbody.appendChild(tr);
+    });
+}
+
+
+/* ===================== MODAL DELETE ===================== */
+function abrirModalDeleteClassRoom(id) {
+    classRoomSelecionado = classRoomCache.find(i => i.id === id);
+
+    if (!classRoomSelecionado) {
+        alert("Sala não encontrado");
+        return;
+    }
+
+    document.getElementById("del-titleClassRoom").innerText = classRoomSelecionado.title;
+    document.getElementById("del-descriptionClassRoom").innerText = classRoomSelecionado.description;
+    document.getElementById("del-capacityClassRoom").innerText = classRoomSelecionado.capacity;
+    document.getElementById("del-durationClassRoom").innerText = classRoomSelecionado.duration;
+    document.getElementById("del-addressClassRoom").innerText = classRoomSelecionado.address;
+    document.getElementById("del-levelClassRoom").innerText = classRoomSelecionado.level;
+    document.getElementById("del-setInstructorByClassRoom").innerText = classRoomSelecionado.setInstructorBy;
+    document.getElementById("del-status").innerText = classRoomSelecionado.active ? "Ativo" : "Inativo";
+
+    document.getElementById("modal-delete-classRoom").classList.add("active");
+}
+
+function fecharModalDeleteClassRoom() {
+    document.getElementById("modal-delete-classRoom").classList.remove("active");
+    classRoomSelecionado = null;
+}
+
+async function confirmarDeleteClassRoom() {
+    if (!classRoomSelecionado) {
+        alert("Sala não selecionado");
+        return;
+    }
+
+    console.log("ENVIANDO DELETE:", classRoomSelecionado.id);
+
+    const resp = await fetch("/classRoom/delet", {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            id: classRoomSelecionado.id
+        })
+    });
+
+    console.log("STATUS:", resp.status);
+
+    const text = await resp.text();
+    console.log("RESPOSTA:", text);
+
+    if (!resp.ok) {
+        alert("Erro ao deletar");
+        return;
+    }
+
+    fecharModalDelete();
+    await getInscrutorEnable();
+    alert("Sala desativado com sucesso");
+}
+
+
+/* ===================== MODAL UPDATE ===================== */
+function editarClassRoom(id) {
+    const room = classRoomCache.find(i => i.id === id);
+
+    if (!room) {
+        alert("Sala não encontrado");
+        return;
+    }
+
+    // Preenche os inputs
+    document.getElementById("edit-id").value = room.id;
+    document.getElementById("edit-title").value = room.title;
+    document.getElementById("edit-description").value = room.description;
+    document.getElementById("edit-capacity").value = room.capacity;
+    document.getElementById("edit-duration").value = room.duration;
+    document.getElementById("edit-address").value = room.address;
+    document.getElementById("edit-level").value = room.level;
+
+
+    // Abre o modal
+    document.getElementById("modal-edit-classRoom").classList.add("active");
+}
+
+function fecharModalEditClassRoom() {
+    document.getElementById("modal-edit-classRoom").classList.remove("active");
+}
+
+function montarClassRoomEditado() {
+    return {
+        id: document.getElementById("edit-id").value,
+        title: document.getElementById("edit-title").value,
+        description: document.getElementById("edit-description").value,
+        capacity: document.getElementById("edit-capacity").value,
+        duration: document.getElementById("edit-duration").value,
+        address: document.getElementById("edit-address").value,
+        level: document.getElementById("edit-level").value
+    };
+}
+
+
+async function salvarEdicaoClassRoomr() {
+    const room = montarClassRoomEditado();
+
+    try {
+        const resp = await fetch("/classRoom/update", {
+            method: "PUT",
+            headers: apiHeaders(),
+            body: JSON.stringify(room)
+        });
+
+        if (!resp.ok) throw new Error();
+
+        fecharModalEdit();
+        getInscrutorEnable(); // recarrega lista
+        alert("Sala atualizado com sucesso!");
+
+    } catch (e) {
+        console.error(e);
+        alert("Erro ao atualizar Sala");
+    }
+}
 
 
 

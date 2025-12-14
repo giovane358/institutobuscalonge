@@ -12,7 +12,7 @@
     <body>
         <div class="sidebar">
             <h2>IBL</h2>
-            <div class="menu-item active" onclick="abrirPagina('dashboard', this)">Dashboard</div>
+          
             <div class="menu-item" onclick="abrirPagina('estudantes', this)">Estudantes</div>
             <div class="menu-item" onclick="abrirPagina('instrutores', this)">Instrutores</div>
             <div class="menu-item" onclick="abrirPagina('salas', this)">Salas</div>
@@ -21,10 +21,7 @@
             <div class="menu-item" onclick="abrirPagina('galeria', this)">Galeria</div>
         </div>
         <div class="content">
-            <div id="dashboard" class="page active">
-                <h1>Dashboard</h1>
-                <div class="card">Filtros / Informações do Dashboard conforme imagem...</div>
-            </div>
+            
             <div id="estudantes" class="page">
                 <h1>Estudantes</h1>
                 <div class="top-bar">
@@ -34,10 +31,10 @@
                     </div>
 
                     <div class="buttons">
-                        <button  class="btn active">Todos</button>
-                        <button  class="btn inactive" onclick="getStudentEnable()">Ativos</button>
-                        <button  class="btn inactive" onclick="getEstudantDisabled()">Inativos</button>
-                        <button  class="btn active" id="btnAbrirStudent">➕ Adicionar</button>
+                        <button class="btn active">Todos</button>
+                        <button class="btn inactive" onclick="getStudentEnable()">Ativos</button>
+                        <button class="btn inactive" onclick="getEstudantDisabled()">Inativos</button>
+                        <button class="btn active" id="btnAbrirStudent">➕ Adicionar</button>
                     </div>
                 </div>
                 <div class="card">
@@ -53,7 +50,7 @@
                                 <th>Ações</th>
                             </tr>
                         </thead>
-                        <tbody id="studentTableBody">  
+                        <tbody id="studentTableBody">
                         </tbody>
                     </table>
                 </div>
@@ -83,7 +80,7 @@
                                 <th>Telefone</th>
                                 <th>Status</th>
                                 <th>Ações</th>
-                
+
                             </tr>
                         </thead>
                         <tbody id="instructorsTableBody">
@@ -101,35 +98,28 @@
                     </div>
                     <div class="buttons">
                         <button class="btn active">Todos</button>
-                        <button class="btn inactive" onclick="getSalasEnable()">Ativos</button>
-                        <button class="btn inactive" onclick="getSalasDisabled()">Inativos</button>
-                        <button class="add-btn" id="btnAbrirSalas">➕ Adicionar</button>
+                        <button class="btn inactive" onclick="getClassRoomEnable()">Ativos</button>
+                        <button class="btn inactive" onclick="getClassRoomDisabled()">Inativos</button>
+                        <button class="add-btn" id="btnAbrirClassRoom">➕ Adicionar</button>
                     </div>
                 </div>
                 <div class="card">
                     <table>
                         <thead>
                             <tr>
-                                <th>Nome</th>
+                                <th>Id</th>
+                                <th>Titulo</th>
+                                <th>Descrição</th>
                                 <th>Capacidade</th>
-                                <th>Local</th>
-                                <th>Recurso</th>
+                                <th>Duração</th>
+                                <th>Onde</th>
+                                <th>Nível</th>
                                 <th>Status</th>
                                 <th>Ações</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>SALA A1</td>
-                                <td>30</td>
-                                <td>1° andar</td>
-                                <td>Projetor e Wi-Fi</td>
-                                <td><span class="status ativo">Ativo</span></td>
-                                <td class="actions">
-                                    <button>✏️</button>
-                                    <button>🗑️</button>
-                                </td>
-                            </tr>
+                        <tbody id="classRoomTableBody">
+
                         </tbody>
                     </table>
                 </div>
@@ -223,6 +213,9 @@
                 </div>
             </div>
 
+
+
+
             <!---modal-instructor-->
             <div class="modal" id="modal-instructor">
                 <div class="modal-content">
@@ -283,7 +276,7 @@
                 </div>
             </div>
 
-             <!-- MODAL Atualizar INSTRUCTOR -->
+            <!-- MODAL Atualizar INSTRUCTOR -->
             <div class="modal" id="modal-edit-instructor">
                 <div class="modal-content">
                     <span class="close" onclick="fecharModalEdit()">&times;</span>
@@ -308,6 +301,9 @@
                     </div>
                 </div>
             </div>
+
+
+
 
             <!---modal-Estudnates-->
             <div class="modal" id="modal-student">
@@ -352,48 +348,148 @@
             <!-- MODAL Atualizar Estudentes -->
             <div class="modal" id="modal-edit-student">
                 <div class="modal-content">
-                    <span class="close" onclick="fecharModalEdit()">&times;</span>
+                    <span class="close" onclick="fecharModalEditStudent()">&times;</span>
 
                     <h2>Editar Estudentes</h2>
 
                     <!-- RI escondido -->
-                    <input type="hidden" id="edit-ra">
-
-                          <div class="input-box">
-                            <input placeholder="Último Nome" type="text" id="lastName_student">
-                        </div>
-
+                    <input type="hidden" id="edit-raStudent">
+         
                     <div class="input-box">
-                            <input placeholder="Último Nome" type="text" id="lastName_student">
-                        </div>
-
-                    <div class="input-box">
-                        <input type="email" id="edit-email" placeholder="Email_student">
+                        <input type="email" id="edit-emailStudent" placeholder="Email">
                     </div>
 
                     <div class="input-box">
-                        <input type="text" id="edit-contact" placeholder="Contato_student">
+                        <input type="text" id="edit-contactStudent" placeholder="Contato">
                     </div>
-
-                        <div class="input-box">
-                            <input placeholder="Data de Nascimento" type="date" id="birthDate_student">
-                        </div>
-
 
                     <div class="modal-actions">
-                        <button class="btn inactive" onclick="fecharModalEdit()">Cancelar</button>
+                        <button class="btn inactive" onclick="fecharModalEditStudent()">Cancelar</button>
                         <button class="btn active" onclick="salvarEdicaoStudent()">Salvar</button>
                     </div>
                 </div>
             </div>
 
-           
+            <!-- MODAL DELETE STUDENTS -->
+            <div class="modal" id="modal-delete-students">
+                <div class="modal-content">
+                    <span class="close" onclick="fecharModalDeleteStudent()">&times;</span>
+                    <h2>Confirmar exclusão</h2>
+                    <div class="delete-info">
+                        <p><strong>Titulo:</strong> <span id="del-nameStudent"></span></p>
+                        <p><strong>Descrição:</strong> <span id="del-emailStudent"></span></p>
+                        <p><strong>Capacidade:</strong> <span id="del-contactStudent"></span></p>
+                        <p><strong>Duração:</strong> <span id="del-statusStudent"></span></p>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn inactive" onclick="fecharModalDeleteStudent()">Cancelar</button>
+                        <button class="btn danger" onclick="confirmarDeleteStudent()">Excluir</button>
 
-             
-           
+                    </div>
+                </div>
+            </div>
 
 
 
+            <!---modal-Classroom-->
+            <div class="modal" id="modal-classRoom">
+                <div class="modal-content">
+                    <span class="close" id="btnFechar">&times;</span>
+                    <h2>Cadastro de Salas</h2>
+
+                    <form id="formsClassRoom">
+
+                        <div class="input-box">
+                            <input placeholder="Titulo" type="text" id="titleClassRoom">
+                        </div>
+                        <div class="input-box">
+                            <input placeholder="Descrição" type="text" id="descriptionClassRoom">
+                        </div>
+                        <div class="input-box">
+                            <input placeholder="Capacidade" type="text" id="capacityClassRoom">
+                        </div>
+                        <div class="input-box">
+                            <input placeholder="Duração" type="number" id="durationClassRoom">
+                        </div>
+                        <div class="input-box">
+                            <input placeholder="Onde" type="text" id="addressClassRoom">
+                        </div>
+                        <div class="input-box">
+                            <input placeholder="Nivel" type="text" id="levelClassRoom">
+                        </div>
+                        <div class="input-box">
+                            <input placeholder="Instrutor" type="text" id="setInstructorByClassRoom">
+                        </div>
+
+                        <button type="submit" onclick="registerClassRoom()">Enviar</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- MODAL DELETE CLASSROOM -->
+            <div class="modal" id="modal-delete-classRoom">
+                <div class="modal-content">
+                    <span class="close" onclick="fecharModalDeleteClassRoom()">&times;</span>
+                    <h2>Confirmar exclusão</h2>
+                    <div class="delete-info">
+                        <p><strong>Titulo::</strong> <span id="del-titleClassRoom"></span></p>
+                        <p><strong>Descrição:</strong> <span id="del-descriptionClassRoom"></span></p>
+                        <p><strong>Capacidade:</strong> <span id="del-capacityClassRoom"></span></p>
+                        <p><strong>Duração:</strong> <span id="del-durationClassRoom"></span></p>
+                        <p><strong>Onde:</strong> <span id="del-addressClassRoom"></span></p>
+                        <p><strong>Nível:</strong> <span id="del-levelClassRoom"></span></p>
+                        <p><strong>Instrutor:</strong> <span id="del-setInstructorByClassRoom"></span></p>
+                        <p><strong>Status:</strong> <span id="del-statusClassRoom"></span></p>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn inactive" onclick="fecharModalDeleteClassRoom()">Cancelar</button>
+                        <button class="btn danger" onclick="confirmarDeleteClassRoom()">Excluir</button>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODAL Atualizar ClassRoom -->
+            <div class="modal" id="modal-edit-classRoom">
+                <div class="modal-content">
+                    <span class="close" onclick="fecharModalEditClassRoom()">&times;</span>
+
+                    <h2>Editar ClassRoom</h2>
+
+                    <!--id escondido -->
+                    <input type="hidden" id="edit-id">
+
+                    <div class="input-box">
+                        <input type="text" id="edit-title" placeholder="Titulo">
+                    </div>
+
+                    <div class="input-box">
+                        <input type="text" id="edit-description" placeholder="Descrição">
+                    </div>
+
+                    <div class="input-box">
+                        <input type="text" id="edit-capacity" placeholder="Capacidade">
+                    </div>
+
+                    <div class="input-box">
+                        <input type="text" id="edit-duration" placeholder="duration">
+                    </div>
+
+                    <div class="input-box">
+                        <input type="text" id="edit-address" placeholder="address">
+                    </div>
+
+                    <div class="input-box">
+                        <input type="text" id="edit-level" placeholder="level">
+                    </div>
+
+
+                    <div class="modal-actions">
+                        <button class="btn inactive" onclick="fecharModalEditClassRoom()">Cancelar</button>
+                        <button class="btn active" onclick="salvarEdicaoClassRoomr()">Salvar</button>
+                    </div>
+                </div>
+            </div>
 
             <script src="${pageContext.request.contextPath}/js/dashboard.js"></script>
     </body>

@@ -12,17 +12,14 @@
     <body>
         <!--navegacao-->
         <header>
-            <div class="logo">
-             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfcAO1-rNmarJlfSMP5GZqFD1bQwrxEbZ80Q&s">
-             Istituto Busca Longe</div>
+            <div class="logo"> <img src="${pageContext.request.contextPath}/img/logo.png"></div>
             <nav>
                 <ul>
                     <li><a href="#inicio" class="menu-link">Inicio</a></li>
                     <li><a href="#sobre" class="menu-link">Sobre</a></li>
                     <li><a href="#atividade" class="menu-link">Atividade</a></li>
                     <li><a href="#projeto" class="menu-link">Projetos</a></li>
-                    <li><a href="#galeria" class="menu-link">Galeria de Fotos</a></li>
-                    <li><a href="login.html">ADMIN</a></li>
+                    <li><a href="#galeria" class="menu-link">Galeria</a></li>
                 </ul>
             </nav>
         </header>
@@ -124,7 +121,8 @@
                 <!--Bloco 2 - visãso -->
                 <div class="mission-block">
                     <div class="img-mis">
-                        <img src="https://thumbs.dreamstime.com/b/crian%C3%A7as-felizes-pulando-no-parque-lazer-infantil-e-pessoas-conceituam-grupo-de-brincando-240520384.jpg">
+                        <img
+                            src="https://thumbs.dreamstime.com/b/crian%C3%A7as-felizes-pulando-no-parque-lazer-infantil-e-pessoas-conceituam-grupo-de-brincando-240520384.jpg">
                     </div>
 
                     <div class="mission-text">
@@ -301,35 +299,36 @@
         </section>
         <hr>
         <footer>
-  <div class="footer-content">
+            <div class="footer-content">
 
-    <div class="logo-footer">
-      Instituto Busca Longe
-      <p>Transformando vidas através de atividades e eventos<br>
-      que promovem desenvolvimento social e comunitário.</p>
-    </div>
+                <div class="logo-footer">
+                    Instituto Busca Longe
+                    <p>Transformando vidas através de atividades e eventos<br>
+                        que promovem desenvolvimento social e comunitário.</p>
+                </div>
 
-    <div class="contact">
-      <h3>Contato</h3>
-      Rua Exemplo, 123 - Centro<br>
-      São Paulo, SP - CEP 01234-567<br>
-      (11) 1234-5678<br>
-      contato@buscalonge.org.br
-    </div>
+                <div class="contact">
+                    <h3>Contato</h3>
+                    Rua Exemplo, 123 - Centro<br>
+                    São Paulo, SP - CEP 01234-567<br>
+                    (11) 1234-5678<br>
+                    contato@buscalonge.org.br
+                </div>
 
-    <div class="social-box">
-      <h2>Redes Sociais</h2>
-      <div class="social">
-        <a href="#"><img src="https://img.icons8.com/ios-filled/40/instagram-new.png"></a>
-        <a href="#"><img src="https://img.icons8.com/ios-filled/40/whatsapp.png"></a>
-        <a href="#"><img src="https://img.icons8.com/ios-filled/40/facebook-new.png"></a>
-      </div>
-    </div>
+                <div class="social-box">
+                    <h2>Redes Sociais</h2>
+                    <div class="social">
+                        <a href="#"><img src="https://img.icons8.com/ios-filled/40/instagram-new.png"></a>
+                        <a href="#"><img src="https://img.icons8.com/ios-filled/40/whatsapp.png"></a>
+                        <a href="#"><img src="https://img.icons8.com/ios-filled/40/facebook-new.png"></a>
+                    </div>
+                </div>
 
-  </div>
-</footer>
+            </div>
+        </footer>
         <hr>
         <p class="direitos">&copy; 2025 Instituto Busca Longe. Todos os direitos reservados.</p>
         <script src="${pageContext.request.contextPath}/js/app.js"></script>
     </body>
+
     </html>

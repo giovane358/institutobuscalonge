@@ -29,7 +29,7 @@ public class SecurityConfigurations {
                 .authorizeHttpRequests(auth -> auth
                         // permitir a página de login (GET) e recursos estáticos
                         .requestMatchers(HttpMethod.GET, "/login").permitAll()
-                        .requestMatchers("/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/img/**", "/webjars/**").permitAll()
 
                         .requestMatchers(HttpMethod.GET, "/dashboard").permitAll()
                         .requestMatchers(HttpMethod.GET, "/register").permitAll()
